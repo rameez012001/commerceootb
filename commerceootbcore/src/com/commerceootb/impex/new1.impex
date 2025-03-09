@@ -1,0 +1,28 @@
+$contentCatalog = electronicsContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+
+# Pages
+INSERT_UPDATE PageTemplate; $contentCV[unique = true]; uid[unique = true]; name              ; frontendTemplateName; restrictedPageTypes(code); active[default = true]
+                          ;                          ; KycPageTemplate   ; Kyc Page Template ; custom/kycPage      ; ContentPage              ; ;
+
+INSERT_UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]    ; name      ; &componentRef         ; content[lang = en];
+                                   ;                          ; KycParagraphComponent ; Kyc Title ; KycParagraphComponent ; "Kyc Form"        ;
+
+INSERT_UPDATE JspIncludeComponent; $contentCV[unique = true]; uid[unique = true]; name    ; page                                               ; &componentRef
+                                 ;                          ; KycFormComponent  ; KYCForm ; /WEB-INF/views/responsive/pages/custom/kycForm.jsp ; KycFormComponent
+
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]; name               ; active; cmsComponents(uid, $contentCV)
+                         ;                          ; KycParagraphSlot  ; Kyc Paragraph Slot ; true  ; KycParagraphComponent
+                         ;                          ; KycFormSlot       ; Kyc Form Slot      ; true  ; KycFormComponent
+
+INSERT_UPDATE ContentSlotName; name[unique = true]; template(uid, $contentCV)[unique = true][default = 'KycPageTemplate']; validComponentTypes(code); compTypeGroup(code)
+                             ; KycParagraph       ;                                                                      ;                          ; wide
+                             ; KycForm            ;                                                                      ;                          ; wide
+
+INSERT_UPDATE ContentSlotForTemplate; $contentCV[unique = true]; uid[unique = true]       ; position[unique = true]; pageTemplate(uid, $contentCV)[unique = true][default = 'KycPageTemplate']; contentSlot(uid, $contentCV)[unique = true]; allowOverwrite
+                                    ;                          ; KycParagraphSlot-kycPage ; KycParagraph           ;                                                                          ; KycParagraphSlot                           ; true
+                                    ;                          ; KycForm-kycPage          ; KycForm                ;                                                                          ; KycFormSlot                                ; true
+
+INSERT_UPDATE ContentPage; $contentCV[unique = true]; uid[unique = true]; name             ; masterTemplate(uid, $contentCV); label      ; defaultPage[default = 'true']; approvalStatus(code)[default = 'approved']; homepage[default = 'false']
+                         ;                          ; kycContentPage    ; Kyc Content Page ; KycPageTemplate                ; kycCMSPage ;                              ;                                           ;
+

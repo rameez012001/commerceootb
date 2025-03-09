@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="beans.xsd">
+
+
+	<bean class="com.commerceootbocc.dto.custom.BpclWsDto">
+		<property name="id" type="java.lang.Long"/>
+		<property name="customerName" type="java.lang.String"/>
+		<property name="customerMobileNumber" type="java.lang.Long"/>
+		<property name="customerNumber" type="java.lang.Long"/>
+		<property name="distributorCode" type="java.lang.Integer"/>
+		<property name="operatorId" type="java.lang.String"/>
+		<property name="operatorName" type="java.lang.String"/>
+		<property name="operatorMobileNumber" type="java.lang.Long"/>
+		<property name="lpgId" type="java.lang.Long"/>
+		<property name="otpRefId" type="java.lang.Integer"/>
+		<property name="latitude" type="java.lang.String"/>
+		<property name="longitude" type="java.lang.String"/>
+		<property name="safetyImageUrl" type="java.lang.String"/>
+		<property name="questionRes" type="java.lang.String"/>
+		<property name="surakshaDate" type="java.lang.String"/>
+		<property name="sentToLpgNxt" type="java.lang.Boolean"/>
+		<property name="safetyInspectionDate" type="java.util.Date"/>
+	</bean>
+
+	<bean class="com.commerceootbocc.dto.custom.CustomLinkWsDTO">
+		<property name="title" type="java.lang.String"/>
+		<property name="url" type="java.lang.String"/>
+	</bean>
+
+	<bean class="de.hybris.platform.commercewebservicescommons.dto.product.ProductWsDTO">
+		<property name="bindingFormat" type="java.lang.String"/>
+		<property name="marketingImprintName" type="java.lang.String"/>
+		<property name="availableDate" type="java.util.Date"/>
+		<property name="additionalResources" type="com.commerceootbocc.dto.custom.CustomLinkWsDTO"/>
+		<property name="nonEComCatSection" type="java.util.List&lt;de.hybris.platform.commercewebservicescommons.dto.product.CategoryWsDTO&gt;"/>
+	</bean>
+</beans>

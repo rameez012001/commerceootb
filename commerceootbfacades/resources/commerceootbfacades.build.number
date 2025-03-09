@@ -1,0 +1,11 @@
+#Ant properties
+#Fri Sep 06 07:17:01 UTC 2024
+version.api=2211
+vendor=hybris
+group.id=de.hybris.platform
+name=commerceootbfacades
+description=commerceootbfacades
+builddate=20240906 0716
+releasedate=20240906 0716
+version=2211.28
+module.name=platform-module

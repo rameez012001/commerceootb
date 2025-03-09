@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<config xmlns="http://www.hybris.com/cockpit/config"
+		xmlns:na="http://www.hybris.com/cockpitng/config/notifications"
+		xmlns:list-view="http://www.hybris.com/cockpitng/component/listView"
+		xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch"
+		xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch"
+		xmlns:n="http://www.hybris.com/cockpitng/config/explorertree"
+		xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
+
+	<context merge-by="module" component="editorareaactions" type="Consignment">
+		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:group qualifier="common">
+				<y:label>actiongroup.common</y:label>				
+				<y:action action-id="com.commerceootb.backoffice.actions.confirmpickupaction" property="currentObject"/>				
+			</y:group>
+		</y:actions>
+    </context>
+
+	<!-- Notification Area-->
+	<context component="notification-area">
+	    <na:notification-area>	        
+	        <na:notifications eventType="commerceootbbackoffice.confirmpickup.event" level="SUCCESS">
+	            <na:message>hmc.action.confirmpickup.success</na:message>
+	        </na:notifications>
+	   </na:notification-area>
+	</context>
+
+	<context merge-by="module" component="editorareaactions" type="KycDetails">
+		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:group qualifier="common">
+				<y:label>actiongroup.common</y:label>
+				<y:action action-id="com.commerceootb.backoffice.actions.kycstatusaction" property="currentObject"/>
+			</y:group>
+		</y:actions>
+	</context>
+
+	<context component="explorer-tree" module="commerceootbbackoffice" merge-by="module">
+		<n:explorer-tree>
+			<n:navigation-node id="KYC">
+				<n:type-node id="KycDetails" code="KycDetails"/>
+			</n:navigation-node>
+		</n:explorer-tree>
+	</context>
+	<context component="listview" type="KycDetails" merge-by="type">
+		<list-view:list-view>
+			<list-view:column qualifier="documentId"/>
+			<list-view:column qualifier="kycType"/>
+			<list-view:column qualifier="documentType"/>
+			<list-view:column qualifier="postalCode"/>
+			<list-view:column qualifier="issueDate"/>
+			<list-view:column qualifier="expiryDate"/>
+		</list-view:list-view>
+	</context>
+
+	<context component="editor-area" merge-by="type" type="KycDetails">
+		<editorArea:editorArea>
+			<editorArea:tab name="Kyc Details" position = "1">
+				<editorArea:section name="Section">
+					<editorArea:attribute qualifier="documentId" />
+					<editorArea:attribute qualifier="kycType" />
+					<editorArea:attribute qualifier="documentType" />
+					<editorArea:attribute qualifier="issueDate" />
+					<editorArea:attribute qualifier="expiryDate" />
+					<editorArea:attribute qualifier="kycStatus" />
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+	<context merge-by="type"  type="KycDetails" component="advanced-search">
+		<advanced-search:advanced-search>
+			<advanced-search:field-list>
+				<advanced-search:field name="documentId" operator="equals" selected="true"/>
+				<advanced-search:field name="kycType" operator="equals" selected="false"/>
+				<advanced-search:field name="kycStatus" operator="equals" selected="false"/>
+			</advanced-search:field-list>
+		</advanced-search:advanced-search>
+	</context>
+
+	<context component="simple-search" merge-by="type" type="KycDetails">
+		<simple-search:simple-search>
+			<simple-search:field name="documentId" />
+		</simple-search:simple-search>
+	</context>
+
+</config>

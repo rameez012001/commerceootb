@@ -1,0 +1,12 @@
+<html>
+    <head>
+    </head>
+
+    <body bgcolor="#ffffff">
+
+        <h1>Hello ${ctx.displayName}</h1>
+
+        <p>The Document Number ${ctx.documentNumber}</p>
+
+    </body>
+</html>

@@ -1,0 +1,37 @@
+$contentCatalog = electronicsContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+$siteResource = jar:de.hybris.platform.electronicsstore.constants.ElectronicsstoreConstants&/commerceootbinitialdata/import/sampledata
+#success
+INSERT_UPDATE CMSLinkComponent; $contentCV[unique = true]; uid[unique = true]  ; name        ; url; &linkRef            ; &componentRef       ; target(code)[default = 'sameWindow']; linkName;
+                              ;                          ; SamsungS10PriceLink ; samsung s10 ; #  ; SamsungS10PriceLink ; SamsungS10PriceLink ;                                     ; 69000   ;
+
+INSERT_UPDATE Media; $contentCV[unique = true]; code[unique = true]; @media[translator = de.hybris.platform.impex.jalo.media.MediaDataTranslator]; mime[default = 'image/jpeg']; &imageRef      ; folder(qualifier)[default = 'images'];
+                   ;                          ; samsungS10Logo     ; $siteResource/images/samsungS10.jpg                                         ;                             ; samsung.jpg    ;                                      ;
+                   ;                          ; samsungS10Media    ; $siteResource/images/samsung.jpg                                            ;                             ; samsungS10.jpg ;                                      ;
+
+INSERT_UPDATE OfferBannerComponent; $contentCV[unique = true]; uid[unique = true]       ; name                    ; title[lang = en]      ; description     ; productImage(code); &componentRef            ; isPrice(&linkRef)   ; wasPrice; productLogo(code);
+                                  ;                          ; samsungS10OfferComponent ; Samsung offer Component ; "Samsung Galaxy S10+" ; "ahead of time" ; samsungS10Media   ; samsungS10OfferComponent ; SamsungS10PriceLink ; 79000   ; samsungS10Logo   ;
+
+INSERT_UPDATE ContentSlotName; name[unique = true]; template(uid, $contentCV)[unique = true][default = 'KycPageTemplate']; validComponentTypes(code); compTypeGroup(code)
+                             ; SamsungS10SlotName ;                                                                      ; OfferBannerComponent
+
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]    ; name              ; active; cmsComponents(&componentRef)
+                         ;                          ; samsungS10ContentSlot ; Samsung S10 Offer ; true  ; samsungS10OfferComponent
+
+INSERT_UPDATE ContentSlotForTemplate; $contentCV[unique = true]; uid[unique = true]      ; position[unique = true]; pageTemplate(uid, $contentCV)[unique = true][default = 'KycPageTemplate']; contentSlot(uid, $contentCV)[unique = true]; allowOverwrite
+                                    ;                          ; samsungS10Offer-kycPage ; SamsungS10SlotName     ;                                                                          ; samsungS10ContentSlot                      ; true
+
+
+
+$solrIndexedType = electronicsProductType
+
+INSERT_UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; type(code); localized[default = false]; multiValue[default = true]; useForSpellchecking[default = false]; useForAutocomplete[default = false]; fieldValueProvider              ;
+                                 ; $solrIndexedType                          ; productImage       ; string    ; false                     ;                           ;                                     ;                                    ; productRefImgValueResolver      ;
+                                 ; $solrIndexedType                          ; productDescription ; string    ; false                     ;                           ;                                     ;                                    ; productDescriptionValueResolver ;
+
+$solrIndexedType = electronicsProductType
+
+INSERT_UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; type(code); localized[default = false]; multiValue[default = true]; useForSpellchecking[default = false]; useForAutocomplete[default = false]; fieldValueProvider        ;
+                                 ; $solrIndexedType                          ; productRefPrice    ; string    ; false                     ;                           ;                                     ;                                    ; productPriceValueResolver ;
+                                 ; $solrIndexedType                          ; productRefUrl      ; string    ; false                     ;                           ;                                     ;                                    ; productRefUrlResolver     ;
+                                 ; $solrIndexedType                          ; productRefRating   ; string    ; false                     ;                           ;                                     ;                                    ; productRefRatingResolver  ;

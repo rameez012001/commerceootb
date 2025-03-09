@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+    <alias alias="simpleSuggestionFacade" name="defaultSimpleSuggestionFacade"/>
+    <bean id="defaultSimpleSuggestionFacade"
+          class="com.commerceootb.facades.suggestion.impl.DefaultSimpleSuggestionFacade">
+        <property name="simpleSuggestionService" ref="simpleSuggestionService"/>
+        <property name="userService" ref="userService"/>
+        <property name="categoryService" ref="categoryService"/>
+        <property name="productService" ref="productService"/>
+        <property name="productConverter" ref="carouselProductConverter"/>
+        <property name="cartService" ref="cartService"/>
+    </bean>
+
+    <bean id="carouselProductConverter" parent="defaultProductConverter">
+        <property name="populators">
+            <list merge="true">
+                <ref bean="productPricePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="acceleratorVariantOptionDataConverter" alias="variantOptionDataConverter"/>
+    <bean id="acceleratorVariantOptionDataConverter" parent="abstractPopulatingConverter">
+        <lookup-method name="createTarget" bean="variantOptionData"/>
+        <property name="populators">
+            <list>
+                <ref bean="acceleratorVariantOptionDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultAcceleratorVariantOptionDataPopulator" alias="acceleratorVariantOptionDataPopulator"/>
+    <bean id="defaultAcceleratorVariantOptionDataPopulator"
+          class="com.commerceootb.facades.populators.AcceleratorVariantOptionDataPopulator"
+          parent="variantOptionDataPopulator">
+        <property name="mediaService" ref="mediaService"/>
+        <property name="mediaContainerService" ref="mediaContainerService"/>
+        <property name="typeService" ref="typeService"/>
+        <property name="imageFormatMapping" ref="imageFormatMapping"/>
+        <property name="variantAttributeMapping">
+            <map>
+                <entry key="ApparelStyleVariantProduct.style" value="styleSwatch"/>
+            </map>
+        </property>
+    </bean>
+
+
+    <alias name="acceleratorGenderConverter" alias="genderConverter"/>
+    <bean id="acceleratorGenderConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.commerceootb.facades.product.data.GenderData"/>
+        <property name="populators">
+            <list>
+                <ref bean="genderDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultGenderDataPopulator" alias="genderDataPopulator"/>
+    <bean id="defaultGenderDataPopulator" class="com.commerceootb.facades.populators.GenderDataPopulator">
+        <property name="typeService" ref="typeService"/>
+    </bean>
+
+    <bean id="apparelProductPopulator" class="com.commerceootb.facades.populators.ApparelProductPopulator">
+        <property name="genderConverter" ref="genderConverter"/>
+    </bean>
+
+    <!-- Add the apparelProductPopulator to the productConverter -->
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="productConverter"/>
+        <property name="add" ref="apparelProductPopulator"/>
+    </bean>
+
+    <!-- accelerator Image Format Mappings -->
+    <alias name="acceleratorImageFormatMapping" alias="imageFormatMapping"/>
+    <bean id="acceleratorImageFormatMapping" parent="defaultImageFormatMapping">
+        <property name="mapping">
+            <map>
+                <entry key="superZoom" value="1200Wx1200H"/>
+                <entry key="zoom" value="515Wx515H"/>
+                <entry key="store" value="365Wx246H"/>
+                <entry key="product" value="300Wx300H"/>
+                <entry key="thumbnail" value="96Wx96H"/>
+                <entry key="cartIcon" value="65Wx65H"/>
+                <entry key="styleSwatch" value="30Wx30H"/>
+            </map>
+        </property>
+    </bean>
+
+    <alias name="acceleratorProductPrimaryImagePopulator" alias="productPrimaryImagePopulator"/>
+    <bean id="acceleratorProductPrimaryImagePopulator" parent="defaultProductPrimaryImagePopulator">
+        <property name="imageFormats">
+            <list>
+                <value>zoom</value>
+                <value>product</value>
+                <value>thumbnail</value>
+                <value>cartIcon</value>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="acceleratorProductGalleryImagesPopulator" alias="productGalleryImagesPopulator"/>
+    <bean id="acceleratorProductGalleryImagesPopulator" parent="defaultProductGalleryImagesPopulator">
+        <property name="imageFormats">
+            <list>
+                <value>superZoom</value>
+                <value>zoom</value>
+                <value>product</value>
+                <value>thumbnail</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="customerEmailContext" class="com.commerceootb.facades.process.email.context.CustomerEmailContext"
+          parent="abstractEmailContext" scope="prototype">
+        <property name="customerConverter" ref="customerConverter"/>
+    </bean>
+
+    <bean id="forgottenPasswordEmailContext"
+          class="com.commerceootb.facades.process.email.context.ForgottenPasswordEmailContext"
+          parent="customerEmailContext" scope="prototype">
+        <property name="customerConverter" ref="customerConverter"/>
+    </bean>
+
+    <bean id="orderNotificationEmailContext"
+          class="com.commerceootb.facades.process.email.context.OrderNotificationEmailContext"
+          parent="abstractEmailContext" scope="prototype">
+        <property name="orderConverter" ref="orderConverter"/>
+    </bean>
+
+    <bean id="quoteNotificationEmailContext"
+          class="com.commerceootb.facades.process.email.context.QuoteNotificationEmailContext"
+          parent="abstractEmailContext" scope="prototype">
+        <property name="quoteService" ref="quoteService"/>
+        <property name="quoteConverter" ref="quoteConverter"/>
+    </bean>
+
+    <bean id="deliverySentEmailContext" class="com.commerceootb.facades.process.email.context.DeliverySentEmailContext"
+          parent="abstractEmailContext" scope="prototype">
+        <property name="consignmentConverter" ref="consignmentConverter"/>
+    </bean>
+
+    <bean id="readyForPickupEmailContext"
+          class="com.commerceootb.facades.process.email.context.ReadyForPickupEmailContext"
+          parent="abstractEmailContext" scope="prototype">
+        <property name="consignmentConverter" ref="consignmentConverter"/>
+    </bean>
+
+    <bean id="orderCancelledEmailContext"
+          class="com.commerceootb.facades.process.email.context.OrderCancelledEmailContext"
+          parent="abstractEmailContext" scope="prototype">
+        <property name="orderConverter" ref="orderConverter"/>
+    </bean>
+
+    <bean id="orderRefundEmailContext" class="com.commerceootb.facades.process.email.context.OrderRefundEmailContext"
+          parent="abstractEmailContext" scope="prototype">
+        <property name="orderConverter" ref="orderConverter"/>
+    </bean>
+    <bean id="consignmentCollectionReminderEmailContext"
+          class="com.commerceootb.facades.process.email.context.ConsignmentCollectionReminderEmailContext"
+          parent="abstractEmailContext" scope="prototype">
+        <property name="consignmentConverter" ref="consignmentConverter"/>
+        <property name="formatFactory" ref="formatFactory"/>
+        <property name="customerServiceUncollectedConsignmentStrategy"
+                  ref="customerServiceUncollectedConsignmentStrategy"/>
+        <property name="orderConverter" ref="orderConverter"/>
+    </bean>
+
+    <bean id="orderPartiallyModifiedEmailContext"
+          class="com.commerceootb.facades.process.email.context.OrderPartiallyModifiedEmailContext"
+          parent="abstractEmailContext" scope="prototype">
+        <property name="orderConverter" ref="orderConverter"/>
+        <property name="orderEntryConverter" ref="orderEntryConverter"/>
+        <property name="priceDataFactory" ref="priceDataFactory"/>
+    </bean>
+
+    <bean id="orderPartiallyCanceledEmailContext"
+          class="com.commerceootb.facades.process.email.context.OrderPartiallyCanceledEmailContext"
+          parent="orderPartiallyModifiedEmailContext" scope="prototype">
+    </bean>
+
+    <bean id="orderPartiallyRefundedEmailContext"
+          class="com.commerceootb.facades.process.email.context.OrderPartiallyRefundedEmailContext"
+          parent="orderPartiallyModifiedEmailContext" scope="prototype">
+    </bean>
+
+    <bean id="notPickedUpConsignmentCanceledEmailContext"
+          class="com.commerceootb.facades.process.email.context.NotPickedUpConsignmentCanceledEmailContext"
+          parent="abstractEmailContext" scope="prototype">
+        <property name="consignmentConverter" ref="consignmentConverter"/>
+        <property name="priceDataFactory" ref="priceDataFactory"/>
+    </bean>
+
+    <alias name="yacceleratorSearchPagePointOfServiceDistancePopulator"
+           alias="searchPagePointOfServiceDistancePopulator"/>
+    <bean id="yacceleratorSearchPagePointOfServiceDistancePopulator"
+          class="com.commerceootb.facades.storefinder.populators.SearchPagePointOfServiceDistancePopulator">
+        <property name="pointOfServiceDistanceConverter" ref="pointOfServiceDistanceConverter"/>
+    </bean>
+
+    <bean id="genderData" class="com.commerceootb.facades.product.data.GenderData" scope="prototype"/>
+
+    <bean id="kycCustomFacade" class="com.commerceootb.facades.facadeImpl.DefaultKycCustomFacade">
+        <property name="modelService" ref="modelService"/>
+        <property name="userService" ref="userService"/>
+        <property name="kycPopConverter" ref="kycPopConverter"/>
+        <property name="kycRevPopulator" ref="kycRevPopulator"/>
+        <property name="eventService" ref="eventService"/>
+    </bean>
+
+    <bean id="kycPopulator" class="com.commerceootb.facades.populators.KycPopulator"/>
+
+    <bean id="kycReversePopulator" class="com.commerceootb.facades.populators.KycReversePopulator">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+
+    <bean id="kycPopConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.commerceootb.facades.product.data.KycData"/>
+        <property name="populators">
+            <list>
+                <ref bean="kycPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="kycRevPopulator" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.commerceootb.core.model.KycDetailsModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="kycReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="kycEmailContext"
+          class="com.commerceootb.facades.process.email.context.KycEmailContext"
+          parent="abstractEmailContext"
+          scope="prototype">
+    </bean>
+
+    <!--	Bpcl Facades	-->
+    <bean id="bpclPopulator" class="com.commerceootb.facades.populators.BpclPopulator"/>
+    <bean id="bpclConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.commerceootb.facades.product.data.BpclData"/>
+        <property name="populators">
+            <list>
+                <ref bean="bpclPopulator"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="bpclFacade" class="com.commerceootb.facades.facadeImpl.BpclFacadeImpl">
+        <property name="bpclConverter" ref="bpclConverter"/>
+        <property name="bpclService" ref="bpclService"/>
+    </bean>
+
+    <!--	Product Facade	-->
+    <bean id="customProductPopulator" class="com.commerceootb.facades.populators.CustomProductPopulator">
+        <property name="customLinkConverter" ref="customLinkConverter"/>
+        <property name="categoryConverter" ref="categoryConverter"/>
+    </bean>
+
+    <bean id="defaultProductConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="de.hybris.platform.commercefacades.product.data.ProductData"/>
+        <property name="populators">
+            <list merge="true">
+                <ref bean="customProductPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="customProductFacade" alias="productFacade"/>
+    <bean id="customProductFacade" class="com.commerceootb.facades.facadeImpl.CustomProductFacade"
+          parent="defaultProductFacade">
+        <property name="productConverter" ref="defaultProductConverter"/>
+    </bean>
+
+
+    <bean id="customLinkPopulator" class="com.commerceootb.facades.populators.CustomLinkPopulator"/>
+    <bean id="customLinkConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.commerceootb.facades.product.data.CustomLinkData"/>
+        <property name="populators">
+            <list>
+                <ref bean="customLinkPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <!--	<bean id="orderSolrPopulator" class="com.commerceootb.facades.populators.OrderSolrPopulator"/>-->
+    <!--	<bean id="orderSolrConverter" parent="abstractPopulatingConverter">-->
+    <!--		<property name="targetClass" value="de.hybris.platform.commercefacades.product.data.ProductData" />-->
+    <!--		<property name="populators">-->
+    <!--			<list>-->
+    <!--				<ref bean="orderSolrPopulator" />-->
+    <!--			</list>-->
+    <!--		</property>-->
+    <!--	</bean>-->
+    <!--	<bean id="orderSolrFacade" class="com.commerceootb.facades.facadeImpl.OrderFacadeImpl">-->
+    <!--		<property name="orderSolrConverter" ref="orderSolrConverter"/>-->
+    <!--	</bean>-->
+
+    <alias name="productRefPopulator" alias="searchResultProductPopulator"/>
+    <bean id="productRefPopulator" class="com.commerceootb.facades.populators.ProductRefPopulator">
+        <property name="commonI18NService" ref="commonI18NService"/>
+        <property name="imageFormatMapping" ref="imageFormatMapping"/>
+        <property name="priceDataFactory" ref="priceDataFactory"/>
+        <property name="productDataUrlResolver" ref="productDataUrlResolver"/>
+        <property name="productFeatureListPopulator" ref="productFeatureListPopulator"/>
+        <property name="productService" ref="productService"/>
+        <property name="stockConverter" ref="stockConverter"/>
+        <property name="stockLevelStatusConverter" ref="stockLevelStatusConverter"/>
+    </bean>
+
+
+</beans>

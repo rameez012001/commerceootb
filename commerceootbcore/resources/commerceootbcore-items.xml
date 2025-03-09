@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="items.xsd">
+
+    <collectiontypes>
+        <collectiontype code="GenderList" elementtype="Gender" autocreate="true" type="list"/>
+        <collectiontype code="SwatchColorSet" elementtype="SwatchColorEnum" autocreate="true" type="set"/>
+        <collectiontype code="MerchandiseComponents" elementtype="MerchandiseComponent"/>
+        <collectiontype code="KycList" elementtype="KycDetails" type="list" autocreate="true"/>
+        <collectiontype code="ListCategory" elementtype="Category" type="list" autocreate="true"/>
+        <collectiontype code="CustomCMSLink" elementtype="CMSLinkComponent" type="list" autocreate="true"/>
+    </collectiontypes>
+
+    <enumtypes>
+        <enumtype code="SwatchColorEnum" generate="true" autocreate="true" dynamic="true">
+            <value code="BLACK"/>
+            <value code="BLUE"/>
+            <value code="BROWN"/>
+            <value code="GREEN"/>
+            <value code="GREY"/>
+            <value code="ORANGE"/>
+            <value code="PINK"/>
+            <value code="PURPLE"/>
+            <value code="RED"/>
+            <value code="SILVER"/>
+            <value code="WHITE"/>
+            <value code="YELLOW"/>
+        </enumtype>
+
+        <enumtype code="MerchandiseType">
+            <value code="MERCHANDISING"/>
+            <value code="OFFER_PRICE"/>
+        </enumtype>
+
+        <!--Document Type -->
+        <enumtype code="KycDocumentType">
+            <value code="AADHAAR_CARD"/>
+            <value code="DRIVERS_LICENSE"/>
+            <value code="PASSPORT"/>
+        </enumtype>
+
+        <enumtype code="KycStatus">
+            <value code="PENDING"/>
+            <value code="APPROVED"/>
+            <value code="FAILED"/>
+        </enumtype>
+
+        <enumtype code="ProductReferenceTypeEnum" autocreate="false" generate="false">
+            <value code="BUNDLE"/>
+        </enumtype>
+
+    </enumtypes>
+
+    <relations>
+
+        <relation code="Product2MerchandiseRel" localized="false">
+            <sourceElement type="Product" qualifier="product" cardinality="one">
+                <modifiers read="true" write="true" search="true"/>
+            </sourceElement>
+            <targetElement type="MerchandiseComponent" qualifier="merchandiseComponent" cardinality="many">
+                <modifiers read="true" write="true" search="true" partof="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="Customer2KycDet" localized="false">
+            <sourceElement type="Customer" qualifier="customer" cardinality="one">
+                <modifiers read="true" write="true" search="true"/>
+            </sourceElement>
+            <targetElement type="KycDetails" qualifier="kycDetails" cardinality="many">
+                <modifiers read="true" write="true" search="true" partof="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="KycDetail2BusinessProcess" localized="false">
+            <sourceElement type="KycDetails" qualifier="kycDetails" cardinality="one">
+                <modifiers read="true" write="true" search="true"/>
+            </sourceElement>
+            <targetElement type="KycProcess" qualifier="kycProcess" cardinality="many">
+                <modifiers read="true" write="true" search="true" partof="true"/>
+            </targetElement>
+        </relation>
+    </relations>
+
+    <itemtypes>
+
+        <typegroup name="Apparel">
+            <itemtype code="ApparelProduct" extends="Product"
+                      autocreate="true" generate="true"
+                      jaloclass="com.commerceootb.core.jalo.ApparelProduct">
+                <description>Base apparel product extension that contains additional attributes.</description>
+                <attributes>
+                    <attribute qualifier="genders" type="GenderList">
+                        <description>List of genders that the ApparelProduct is designed for</description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="ApparelStyleVariantProduct" extends="VariantProduct"
+                      autocreate="true" generate="true"
+                      jaloclass="com.commerceootb.core.jalo.ApparelStyleVariantProduct">
+                <description>Apparel style variant type that contains additional attribute describing variant style.
+                </description>
+                <attributes>
+                    <attribute qualifier="style" type="localized:java.lang.String"
+                               metatype="VariantAttributeDescriptor">
+                        <description>Color/Pattern of the product.</description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="swatchColors" type="SwatchColorSet">
+                        <description>A normalized color mapping to a standardized front-end navigable name.
+                        </description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+
+            </itemtype>
+
+            <itemtype code="ApparelSizeVariantProduct" extends="ApparelStyleVariantProduct"
+                      autocreate="true" generate="true"
+                      jaloclass="com.commerceootb.core.jalo.ApparelSizeVariantProduct">
+                <description>Apparel size variant type that contains additional attribute describing variant size.
+                </description>
+                <attributes>
+                    <attribute qualifier="size" type="localized:java.lang.String"
+                               metatype="VariantAttributeDescriptor">
+                        <description>Size of the product.</description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="Electronics">
+            <itemtype code="ElectronicsColorVariantProduct" extends="VariantProduct"
+                      autocreate="true" generate="true"
+                      jaloclass="com.commerceootb.core.jalo.ElectronicsColorVariantProduct">
+                <description>Electronics color variant type that contains additional attribute describing variant color.
+                </description>
+                <attributes>
+                    <attribute qualifier="color" type="localized:java.lang.String"
+                               metatype="VariantAttributeDescriptor">
+                        <description>Color of the product.</description>
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="CustomModel">
+
+            <itemtype code="CustomLink" autocreate="true" generate="true">
+                <deployment table="CustomLink" typecode="13700"/>
+                <attributes>
+                    <attribute qualifier="linkId" type="java.lang.String">
+                        <modifiers unique="true" read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="title" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="url" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="Product" autocreate="false">
+                <attributes>
+
+                    <attribute qualifier="bindingFormat" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="marketingImprintName" type="localized:java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="availableDate" type="java.util.Date">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="additionalResources" type="CustomLink">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="nonEComCatSection" type="ListCategory">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+            <!-- New Type -->
+            <itemtype code="ProductReview" autocreate="true" generate="true">
+
+                <deployment table="ProductReview" typecode="13000"/>
+
+                <attributes>
+
+                    <attribute qualifier="reviewId" type="java.lang.String">
+                        <modifiers unique="true" read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="reviewText" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="rating" type="java.lang.Integer">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                </attributes>
+            </itemtype>
+
+        </typegroup>
+
+        <typegroup name="MerchandiseText">
+
+            <itemtype code="MerchandiseComponent" autocreate="true" generate="true">
+                <deployment table="MerchandiseComponent" typecode="12004"/>
+                <custom-properties>
+                    <property name="catalogItemType">
+                        <value>Boolean.TRUE</value>
+                    </property>
+
+                    <property name="catalogVersionAttributeQualifier">
+                        <value>"catalogVersion"</value>
+                    </property>
+                    <property name="uniqueKeyAttributeQualifier">
+                        <value>"textCode"</value>
+                    </property>
+                </custom-properties>
+                <attributes>
+                    <attribute qualifier="catalog" type="Catalog" redeclare="false" autocreate="true" generate="true">
+                        <modifiers read="true" write="true" search="true" optional="false"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="catalogVersion" type="CatalogVersion">
+                        <modifiers read="true" write="true" search="true" optional="false" partof="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="textCode" type="java.lang.String">
+                        <modifiers read="true" write="true" unique="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="type" type="MerchandiseType">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="text" type="localized:java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="textColor" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="bgColor" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="priority" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="startDate" type="java.util.Date">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="endDate" type="java.util.Date">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                </attributes>
+            </itemtype>
+
+        </typegroup>
+
+        <typegroup name="KycDetails">
+
+            <itemtype code="Customer" autocreate="false">
+                <attributes>
+                    <attribute qualifier="kycList" type="KycList">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+            <itemtype code="KycDetails" generate="true" autocreate="true">
+                <deployment table="KycDetails" typecode="13580"/>
+                <attributes>
+
+
+                    <attribute qualifier="documentId" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="kycType" type="java.lang.String">
+                        <modifiers unique="false" read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="nationality" type="java.lang.String">
+                        <modifiers unique="false" read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="dob" type="java.util.Date">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="postalCode" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="issueDate" type="java.util.Date">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="expiryDate" type="java.util.Date">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="documentType" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="kycStatus" type="KycStatus">
+                        <modifiers read="true" write="true"/>
+                        <defaultvalue>em().getEnumerationValue("KycStatus","PENDING")</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+            <itemtype code="KycProcess" extends="BusinessProcess" autocreate="true">
+
+            </itemtype>
+            <itemtype code="KycEmailProcess" extends="StoreFrontCustomerProcess" autocreate="true">
+                <attributes>
+                    <attribute qualifier="kycDetail" type="KycDetails">
+                        <modifiers read="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+        </typegroup>
+
+        <typegroup name="BPCL">
+            <itemtype code="Bpcl" autocreate="true" generate="true">
+
+                <deployment table="Bpcl" typecode="13030"/>
+
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.Long">
+                        <modifiers read="true" write="true" unique="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="customerName" type="java.lang.String">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="customerMobileNumber" type="java.lang.Long">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="customerNumber" type="java.lang.Long">
+                        <modifiers read="true" write="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="distributorCode" type="java.lang.Integer">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="operatorId" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="operatorName" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="operatorMobileNumber" type="java.lang.Long">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="lpgId" type="java.lang.Long">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="otpRefId" type="java.lang.Integer">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="latitude" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="longitude" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="safetyImageUrl" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="questionRes" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="surakshaDate" type="java.lang.String">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="sentToLpgNxt" type="java.lang.Boolean">
+                        <modifiers read="true" write="true" search="true" optional="false"/>
+                        <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                        <persistence type="property"/>
+                    </attribute>
+
+                    <attribute qualifier="safetyInspectionDate" type="java.util.Date">
+                        <modifiers read="true" write="true" search="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+        <typegroup name="CMSComponent">
+            <itemtype code="OfferBannerComponent" extends="SimpleCMSComponent" autocreate="true" generate="true" jaloclass="com.commerceootb.core.jalo.OfferBannerComponent">
+                <attributes>
+                    <attribute type="Media" qualifier="productLogo">
+                        <modifiers read="true" write="true" />
+                        <persistence type="property" />
+                    </attribute>
+                    <attribute type="localized:java.lang.String" qualifier="title">
+                        <modifiers read="true" write="true" />
+                        <persistence type="property" />
+                    </attribute>
+                    <attribute type="java.lang.String" qualifier="description">
+                        <modifiers read="true" write="true" />
+                        <persistence type="property" />
+                    </attribute>
+                    <attribute type="java.lang.String" qualifier="wasPrice">
+                        <modifiers read="true" write="true" />
+                        <persistence type="property" />
+                    </attribute>
+                    <attribute type="CMSLinkComponent" qualifier="isPrice">
+                        <modifiers read="true" write="true" />
+                        <persistence type="property" />
+                    </attribute>
+                    <attribute type="Media" qualifier="productImage">
+                        <modifiers read="true" write="true" />
+                        <persistence type="property" />
+                    </attribute>
+                    <attribute type="java.lang.String" qualifier="productCode">
+                        <modifiers read="true" write="true" />
+                        <persistence type="property" />
+                    </attribute>
+                </attributes>
+            </itemtype>
+            <itemtype code="PriceRow" autocreate="false">
+                <attributes>
+                    <attribute qualifier="offerPrice" type="java.lang.Double">
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+    </itemtypes>
+</items>
