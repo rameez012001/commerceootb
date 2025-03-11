@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Mar 4, 2025, 11:34:03 AM                    ---
+ * --- Generated at Mar 10, 2025, 10:22:24 AM                   ---
  * ----------------------------------------------------------------
  */
 package com.commerceootb.core.constants;
@@ -49,6 +49,7 @@ public class GeneratedCommerceootbCoreConstants
 			public static final String ADDITIONALRESOURCES = "additionalResources".intern();
 			public static final String AVAILABLEDATE = "availableDate".intern();
 			public static final String BINDINGFORMAT = "bindingFormat".intern();
+			public static final String ISSEARCHABLE = "isSearchable".intern();
 			public static final String MARKETINGIMPRINTNAME = "marketingImprintName".intern();
 			public static final String MERCHANDISECOMPONENT = "merchandiseComponent".intern();
 			public static final String NONECOMCATSECTION = "nonEComCatSection".intern();

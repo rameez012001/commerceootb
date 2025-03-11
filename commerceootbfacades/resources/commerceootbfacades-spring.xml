@@ -323,5 +323,11 @@
         <property name="stockLevelStatusConverter" ref="stockLevelStatusConverter"/>
     </bean>
 
+    <bean id="customProductFilterPopulator" class="com.commerceootb.facades.populators.CustomProductFilterPopulator"/>
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="facetSearchQueryConverter" />
+        <property name="add" ref="customProductFilterPopulator" />
+    </bean>
+
 
 </beans>

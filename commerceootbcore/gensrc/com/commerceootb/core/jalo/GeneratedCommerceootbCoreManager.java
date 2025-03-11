@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Mar 4, 2025, 11:34:03 AM                    ---
+ * --- Generated at Mar 10, 2025, 10:22:24 AM                   ---
  * ----------------------------------------------------------------
  */
 package com.commerceootb.core.jalo;
@@ -86,6 +86,7 @@ public abstract class GeneratedCommerceootbCoreManager extends Extension
 		tmp.put("availableDate", AttributeMode.INITIAL);
 		tmp.put("additionalResources", AttributeMode.INITIAL);
 		tmp.put("nonEComCatSection", AttributeMode.INITIAL);
+		tmp.put("isSearchable", AttributeMode.INITIAL);
 		ttmp.put("de.hybris.platform.jalo.product.Product", Collections.unmodifiableMap(tmp));
 		tmp = new HashMap<String, AttributeMode>();
 		tmp.put("kycList", AttributeMode.INITIAL);
@@ -531,6 +532,79 @@ public abstract class GeneratedCommerceootbCoreManager extends Extension
 	public String getName()
 	{
 		return CommerceootbCoreConstants.EXTENSIONNAME;
+	}
+	
+	/**
+	 * <i>Generated method</i> - Getter of the <code>Product.isSearchable</code> attribute.
+	 * @return the isSearchable
+	 */
+	public Boolean isIsSearchable(final SessionContext ctx, final Product item)
+	{
+		return (Boolean)item.getProperty( ctx, CommerceootbCoreConstants.Attributes.Product.ISSEARCHABLE);
+	}
+	
+	/**
+	 * <i>Generated method</i> - Getter of the <code>Product.isSearchable</code> attribute.
+	 * @return the isSearchable
+	 */
+	public Boolean isIsSearchable(final Product item)
+	{
+		return isIsSearchable( getSession().getSessionContext(), item );
+	}
+	
+	/**
+	 * <i>Generated method</i> - Getter of the <code>Product.isSearchable</code> attribute. 
+	 * @return the isSearchable
+	 */
+	public boolean isIsSearchableAsPrimitive(final SessionContext ctx, final Product item)
+	{
+		Boolean value = isIsSearchable( ctx,item );
+		return value != null ? value.booleanValue() : false;
+	}
+	
+	/**
+	 * <i>Generated method</i> - Getter of the <code>Product.isSearchable</code> attribute. 
+	 * @return the isSearchable
+	 */
+	public boolean isIsSearchableAsPrimitive(final Product item)
+	{
+		return isIsSearchableAsPrimitive( getSession().getSessionContext(), item );
+	}
+	
+	/**
+	 * <i>Generated method</i> - Setter of the <code>Product.isSearchable</code> attribute. 
+	 * @param value the isSearchable
+	 */
+	public void setIsSearchable(final SessionContext ctx, final Product item, final Boolean value)
+	{
+		item.setProperty(ctx, CommerceootbCoreConstants.Attributes.Product.ISSEARCHABLE,value);
+	}
+	
+	/**
+	 * <i>Generated method</i> - Setter of the <code>Product.isSearchable</code> attribute. 
+	 * @param value the isSearchable
+	 */
+	public void setIsSearchable(final Product item, final Boolean value)
+	{
+		setIsSearchable( getSession().getSessionContext(), item, value );
+	}
+	
+	/**
+	 * <i>Generated method</i> - Setter of the <code>Product.isSearchable</code> attribute. 
+	 * @param value the isSearchable
+	 */
+	public void setIsSearchable(final SessionContext ctx, final Product item, final boolean value)
+	{
+		setIsSearchable( ctx, item, Boolean.valueOf( value ) );
+	}
+	
+	/**
+	 * <i>Generated method</i> - Setter of the <code>Product.isSearchable</code> attribute. 
+	 * @param value the isSearchable
+	 */
+	public void setIsSearchable(final Product item, final boolean value)
+	{
+		setIsSearchable( getSession().getSessionContext(), item, value );
 	}
 	
 	/**
