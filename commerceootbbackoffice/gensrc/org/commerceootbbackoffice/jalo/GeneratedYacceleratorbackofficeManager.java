@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Feb 5, 2025, 7:32:21 PM                     ---
+ * --- Generated at Apr 3, 2025, 1:10:42 PM                     ---
  * ----------------------------------------------------------------
  */
 package org.commerceootbbackoffice.jalo;

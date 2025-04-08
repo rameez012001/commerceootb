@@ -111,7 +111,8 @@ public interface ControllerConstants
 				String HostedOrderPageErrorPage = "pages/checkout/multi/hostedOrderPageErrorPage"; 
 				String HostedOrderPostPage = "pages/checkout/multi/hostedOrderPostPage"; 
 				String SilentOrderPostPage = "pages/checkout/multi/silentOrderPostPage"; 
-				String GiftWrapPage = "pages/checkout/multi/giftWrapPage"; 
+				String GiftWrapPage = "pages/checkout/multi/giftWrapPage";
+				String DeliveryInstructionPage = "pages/checkout/multi/deliveryInstructionPage";
 			}
 
 			interface Password 

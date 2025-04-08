@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Mar 10, 2025, 10:22:24 AM                   ---
+ * --- Generated at Apr 4, 2025, 3:29:08 PM                     ---
  * ----------------------------------------------------------------
  */
 package com.commerceootb.core.jalo;
@@ -12,6 +12,7 @@ import com.commerceootb.core.jalo.ApparelSizeVariantProduct;
 import com.commerceootb.core.jalo.ApparelStyleVariantProduct;
 import com.commerceootb.core.jalo.Bpcl;
 import com.commerceootb.core.jalo.CustomLink;
+import com.commerceootb.core.jalo.DeliveryInstruction;
 import com.commerceootb.core.jalo.ElectronicsColorVariantProduct;
 import com.commerceootb.core.jalo.KycDetails;
 import com.commerceootb.core.jalo.KycEmailProcess;
@@ -32,6 +33,7 @@ import de.hybris.platform.jalo.SessionContext;
 import de.hybris.platform.jalo.c2l.C2LManager;
 import de.hybris.platform.jalo.c2l.Language;
 import de.hybris.platform.jalo.extension.Extension;
+import de.hybris.platform.jalo.order.AbstractOrder;
 import de.hybris.platform.jalo.product.Product;
 import de.hybris.platform.jalo.type.CollectionType;
 import de.hybris.platform.jalo.type.ComposedType;
@@ -81,6 +83,9 @@ public abstract class GeneratedCommerceootbCoreManager extends Extension
 	{
 		final Map<String, Map<String, AttributeMode>> ttmp = new HashMap();
 		Map<String, AttributeMode> tmp = new HashMap<String, AttributeMode>();
+		tmp.put("deliveryInstruction", AttributeMode.INITIAL);
+		ttmp.put("de.hybris.platform.jalo.order.AbstractOrder", Collections.unmodifiableMap(tmp));
+		tmp = new HashMap<String, AttributeMode>();
 		tmp.put("bindingFormat", AttributeMode.INITIAL);
 		tmp.put("marketingImprintName", AttributeMode.INITIAL);
 		tmp.put("availableDate", AttributeMode.INITIAL);
@@ -346,6 +351,32 @@ public abstract class GeneratedCommerceootbCoreManager extends Extension
 		return createCustomLink( getSession().getSessionContext(), attributeValues );
 	}
 	
+	public DeliveryInstruction createDeliveryInstruction(final SessionContext ctx, final Map attributeValues)
+	{
+		try
+		{
+			ComposedType type = getTenant().getJaloConnection().getTypeManager().getComposedType( CommerceootbCoreConstants.TC.DELIVERYINSTRUCTION );
+			return (DeliveryInstruction)type.newInstance( ctx, attributeValues );
+		}
+		catch( JaloGenericCreationException e)
+		{
+			final Throwable cause = e.getCause();
+			throw (cause instanceof RuntimeException ?
+			(RuntimeException)cause
+			:
+			new JaloSystemException( cause, cause.getMessage(), e.getErrorCode() ) );
+		}
+		catch( JaloBusinessException e )
+		{
+			throw new JaloSystemException( e ,"error creating DeliveryInstruction : "+e.getMessage(), 0 );
+		}
+	}
+	
+	public DeliveryInstruction createDeliveryInstruction(final Map attributeValues)
+	{
+		return createDeliveryInstruction( getSession().getSessionContext(), attributeValues );
+	}
+	
 	public ElectronicsColorVariantProduct createElectronicsColorVariantProduct(final SessionContext ctx, final Map attributeValues)
 	{
 		try
@@ -526,6 +557,42 @@ public abstract class GeneratedCommerceootbCoreManager extends Extension
 	public ProductReview createProductReview(final Map attributeValues)
 	{
 		return createProductReview( getSession().getSessionContext(), attributeValues );
+	}
+	
+	/**
+	 * <i>Generated method</i> - Getter of the <code>AbstractOrder.deliveryInstruction</code> attribute.
+	 * @return the deliveryInstruction
+	 */
+	public DeliveryInstruction getDeliveryInstruction(final SessionContext ctx, final AbstractOrder item)
+	{
+		return (DeliveryInstruction)item.getProperty( ctx, CommerceootbCoreConstants.Attributes.AbstractOrder.DELIVERYINSTRUCTION);
+	}
+	
+	/**
+	 * <i>Generated method</i> - Getter of the <code>AbstractOrder.deliveryInstruction</code> attribute.
+	 * @return the deliveryInstruction
+	 */
+	public DeliveryInstruction getDeliveryInstruction(final AbstractOrder item)
+	{
+		return getDeliveryInstruction( getSession().getSessionContext(), item );
+	}
+	
+	/**
+	 * <i>Generated method</i> - Setter of the <code>AbstractOrder.deliveryInstruction</code> attribute. 
+	 * @param value the deliveryInstruction
+	 */
+	public void setDeliveryInstruction(final SessionContext ctx, final AbstractOrder item, final DeliveryInstruction value)
+	{
+		item.setProperty(ctx, CommerceootbCoreConstants.Attributes.AbstractOrder.DELIVERYINSTRUCTION,value);
+	}
+	
+	/**
+	 * <i>Generated method</i> - Setter of the <code>AbstractOrder.deliveryInstruction</code> attribute. 
+	 * @param value the deliveryInstruction
+	 */
+	public void setDeliveryInstruction(final AbstractOrder item, final DeliveryInstruction value)
+	{
+		setDeliveryInstruction( getSession().getSessionContext(), item, value );
 	}
 	
 	@Override

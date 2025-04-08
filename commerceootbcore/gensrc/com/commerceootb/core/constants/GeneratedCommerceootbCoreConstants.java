@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Mar 10, 2025, 10:22:24 AM                   ---
+ * --- Generated at Apr 4, 2025, 3:29:08 PM                     ---
  * ----------------------------------------------------------------
  */
 package com.commerceootb.core.constants;
@@ -21,6 +21,8 @@ public class GeneratedCommerceootbCoreConstants
 		public static final String APPARELSTYLEVARIANTPRODUCT = "ApparelStyleVariantProduct".intern();
 		public static final String BPCL = "Bpcl".intern();
 		public static final String CUSTOMLINK = "CustomLink".intern();
+		public static final String DELIVERYINSTRUCTION = "DeliveryInstruction".intern();
+		public static final String DELIVERYPERIOD = "DeliveryPeriod".intern();
 		public static final String ELECTRONICSCOLORVARIANTPRODUCT = "ElectronicsColorVariantProduct".intern();
 		public static final String KYCDETAILS = "KycDetails".intern();
 		public static final String KYCDOCUMENTTYPE = "KycDocumentType".intern();
@@ -35,6 +37,10 @@ public class GeneratedCommerceootbCoreConstants
 	}
 	public static class Attributes
 	{
+		public static class AbstractOrder
+		{
+			public static final String DELIVERYINSTRUCTION = "deliveryInstruction".intern();
+		}
 		public static class Customer
 		{
 			public static final String KYCDETAILS = "kycDetails".intern();
@@ -57,6 +63,12 @@ public class GeneratedCommerceootbCoreConstants
 	}
 	public static class Enumerations
 	{
+		public static class DeliveryPeriod
+		{
+			public static final String MORNING = "MORNING".intern();
+			public static final String AFTERNOON = "AFTERNOON".intern();
+			public static final String NIGHT = "NIGHT".intern();
+		}
 		public static class KycDocumentType
 		{
 			public static final String AADHAAR_CARD = "AADHAAR_CARD".intern();

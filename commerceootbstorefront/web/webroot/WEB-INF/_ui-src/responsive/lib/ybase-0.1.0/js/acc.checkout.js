@@ -22,6 +22,11 @@ ACC.checkout = {
 			$('#selectDeliveryMethodForm').submit();	
 		})
 
+		$(document).on("click","#deliveryInstructionSubmit",function(e){
+        			e.preventDefault();
+        			$('#deliveryInstructionForm').submit();
+        		})
+
 	},
 
 	bindSavedPayments:function(){

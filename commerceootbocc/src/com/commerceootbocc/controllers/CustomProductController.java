@@ -31,7 +31,7 @@ public class CustomProductController {
     @Resource(name = "customProductFacade")
     private CustomProductFacade customProductFacade;
 
-    @Resource(name = "cwsProductFacade")
+    @Resource
     private ProductFacade productFacade;
 
     @Secured("ROLE_CLIENT")
@@ -41,7 +41,7 @@ public class CustomProductController {
     @ApiBaseSiteIdParam
     public ProductWsDTO getProductByCode(@PathVariable final String productCode,@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields) throws ConversionException
     {
-        final ProductData product = getCustomProductFacade().getProductForCodeAndOptions(productCode, EnumSet.allOf(ProductOption.class));
+        final ProductData product = getProductFacade().getProductForCodeAndOptions(productCode, EnumSet.allOf(ProductOption.class));
         return getDataMapper().map(product, ProductWsDTO.class,fields);
     }
 

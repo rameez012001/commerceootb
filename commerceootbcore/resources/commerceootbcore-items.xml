@@ -51,6 +51,12 @@
             <value code="BUNDLE"/>
         </enumtype>
 
+        <enumtype code="DeliveryPeriod">
+            <value code="MORNING"/>
+            <value code="AFTERNOON"/>
+            <value code="NIGHT"/>
+        </enumtype>
+
     </enumtypes>
 
     <relations>
@@ -156,6 +162,31 @@
         </typegroup>
 
         <typegroup name="CustomModel">
+
+
+            <itemtype code="DeliveryInstruction" generate="true" autocreate="true">
+                <deployment table="DeliveryInstruction" typecode="29019"/>
+                <attributes>
+                    <attribute qualifier="instruction" type="java.lang.String">
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="deliveryPeriod" type="DeliveryPeriod">
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="AbstractOrder"
+                      autocreate="false"
+                      generate="false">
+                <attributes>
+                    <attribute qualifier="deliveryInstruction" type="DeliveryInstruction">
+                        <persistence type="property"/>
+                        <modifiers/>
+                    </attribute>
+                </attributes>
+
+            </itemtype>
 
             <itemtype code="CustomLink" autocreate="true" generate="true">
                 <deployment table="CustomLink" typecode="13700"/>

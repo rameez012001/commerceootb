@@ -70,4 +70,13 @@
 		<property name="safetyInspectionDate" type="java.util.Date"/>
 	</bean>
 
+	<bean class="de.hybris.platform.commercefacades.order.data.AbstractOrderData">
+		<property name="deliveryPeriod" type="com.commerceootb.facades.product.data.DeliveryInstructionData"/>
+	</bean>
+
+	<bean class="com.commerceootb.facades.product.data.DeliveryInstructionData">
+		<property name="instruction" type="String" />
+		<property name="deliveryPeriod" type="String" />
+	</bean>
+
 </beans>
