@@ -18,6 +18,7 @@
 	<import resource="classpath:/commerceootbcore/integration/hot-folder-store-apparel-spring.xml"/>
 	<import resource="classpath:/commerceootbcore/integration/hot-folder-common-spring.xml"/>
     <import resource="classpath:/commerceootbcore/integration/hot-folder-commerceootb-spring.xml"/>
+	<import resource="classpath:/commerceootbcore/integration/hot-folder-store-product-spring.xml"/>
 
 	<!-- SystemSetup for the CommerceootbCore -->
 	<bean id="acceleratorCoreSystemSetup" class="com.commerceootb.core.setup.CoreSystemSetup"
@@ -652,5 +653,15 @@
 		<property name="interceptor" ref="bannerComponentIntreceptor"/>
 		<property name="typeCode" value="OfferBannerComponent"/>
 	</bean>
+
+	<bean id="kycDao" class="com.commerceootb.core.dao.impl.KycDaoImpl">
+		<property name="flexibleSearchService" ref="flexibleSearchService"/>
+	</bean>
+
+	<bean id="kycService" class="com.commerceootb.core.service.KycServiceImpl">
+		<property name="kycDao" ref="kycDao"/>
+	</bean>
+
+
 
 </beans>

@@ -74,4 +74,8 @@
         <property name="userGroupId" type="String"/>
     </bean>
 
+    <bean class="de.hybris.platform.ruleengineservices.rao.CartRAO" extends="de.hybris.platform.ruleengineservices.rao.AbstractOrderRAO">
+        <property name="deliveryModeCode" type="String" />
+    </bean>
+
 </beans>

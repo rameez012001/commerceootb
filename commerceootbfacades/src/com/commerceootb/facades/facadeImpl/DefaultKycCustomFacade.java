@@ -1,20 +1,19 @@
 package com.commerceootb.facades.facadeImpl;
 
-import com.commerceootb.core.event.KycEmailProcessEvent;
 import com.commerceootb.core.event.KycProcessEvent;
 import com.commerceootb.core.model.KycDetailsModel;
+import com.commerceootb.core.service.KycService;
 import com.commerceootb.facades.facadeService.KycCustomFacade;
 import com.commerceootb.facades.product.data.KycData;
-import de.hybris.platform.commercefacades.user.data.CustomerData;
-import de.hybris.platform.commerceservices.customer.CustomerAccountService;
+import de.hybris.platform.commercefacades.product.ProductOption;
+import de.hybris.platform.converters.ConfigurablePopulator;
 import de.hybris.platform.core.model.user.CustomerModel;
-import de.hybris.platform.core.model.user.UserModel;
-import de.hybris.platform.servicelayer.dto.converter.ConversionException;
 import de.hybris.platform.servicelayer.dto.converter.Converter;
 import de.hybris.platform.servicelayer.event.EventService;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.servicelayer.user.UserService;
 
+import java.util.Collection;
 import java.util.List;
 
 public class DefaultKycCustomFacade implements KycCustomFacade {
@@ -23,6 +22,8 @@ public class DefaultKycCustomFacade implements KycCustomFacade {
     private EventService eventService;
     private Converter<KycDetailsModel,KycData> kycPopConverter;
     private Converter<KycData, KycDetailsModel> kycRevPopulator;
+    private ConfigurablePopulator<KycDetailsModel, KycData, ProductOption> kycConfiguredPopulator;
+    private KycService kycService;
 
     @Override
     public void updateCustomerKyc(KycData kycData) throws Exception {
@@ -80,6 +81,19 @@ public KycData getKycDatas() {
         return kycData;
     }
 
+    @Override
+    public KycData getKycDataByIdAndOption(String code, Collection<ProductOption> options) {
+        final KycDetailsModel kycDetailsModel  = getKycService().getKycDetailForCodeAndOption(code);
+        final KycData kycData = new KycData();
+
+        if (options != null)
+        {
+            getKycConfiguredPopulator().populate(kycDetailsModel, kycData, options);
+        }
+
+        return kycData;
+    }
+
     public ModelService getModelService() {
         return modelService;
     }
@@ -118,5 +132,20 @@ public KycData getKycDatas() {
 
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
+    }
+
+    public ConfigurablePopulator<KycDetailsModel, KycData, ProductOption> getKycConfiguredPopulator() {
+        return kycConfiguredPopulator;
+    }
+
+    public void setKycConfiguredPopulator(ConfigurablePopulator<KycDetailsModel, KycData, ProductOption> kycConfiguredPopulator) {
+        this.kycConfiguredPopulator = kycConfiguredPopulator;
+    }
+    public KycService getKycService() {
+        return kycService;
+    }
+
+    public void setKycService(KycService kycService) {
+        this.kycService = kycService;
     }
 }

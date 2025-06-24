@@ -1,4 +1,4 @@
-package com.commerceootbpromotionengine.rule.action.impl;
+package com.commerceootbpromotionengine.rule;
 
 import de.hybris.platform.ruleengineservices.rao.*;
 import de.hybris.platform.ruleengineservices.rule.evaluation.RuleActionContext;

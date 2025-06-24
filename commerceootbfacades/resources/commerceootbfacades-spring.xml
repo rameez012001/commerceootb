@@ -217,6 +217,8 @@
         <property name="kycPopConverter" ref="kycPopConverter"/>
         <property name="kycRevPopulator" ref="kycRevPopulator"/>
         <property name="eventService" ref="eventService"/>
+        <property name="kycConfiguredPopulator" ref="kycConfiguredPopulator"/>
+        <property name="kycService" ref="kycService"/>
     </bean>
 
     <bean id="kycPopulator" class="com.commerceootb.facades.populators.KycPopulator"/>
@@ -276,14 +278,14 @@
         <property name="add" ref="customProductPopulator"/>
     </bean>
 
-<!--    <bean id="defaultProductConverter" parent="abstractPopulatingConverter">-->
-<!--        <property name="targetClass" value="de.hybris.platform.commercefacades.product.data.ProductData"/>-->
-<!--        <property name="populators">-->
-<!--            <list merge="true">-->
-<!--                <ref bean="customProductPopulator"/>-->
-<!--            </list>-->
-<!--        </property>-->
-<!--    </bean>-->
+    <!--    <bean id="defaultProductConverter" parent="abstractPopulatingConverter">-->
+    <!--        <property name="targetClass" value="de.hybris.platform.commercefacades.product.data.ProductData"/>-->
+    <!--        <property name="populators">-->
+    <!--            <list merge="true">-->
+    <!--                <ref bean="customProductPopulator"/>-->
+    <!--            </list>-->
+    <!--        </property>-->
+    <!--    </bean>-->
 
     <alias name="customProductFacade" alias="productFacade"/>
     <bean id="customProductFacade" class="com.commerceootb.facades.facadeImpl.CustomProductFacade"
@@ -302,19 +304,6 @@
         </property>
     </bean>
 
-
-    <!--	<bean id="orderSolrPopulator" class="com.commerceootb.facades.populators.OrderSolrPopulator"/>-->
-    <!--	<bean id="orderSolrConverter" parent="abstractPopulatingConverter">-->
-    <!--		<property name="targetClass" value="de.hybris.platform.commercefacades.product.data.ProductData" />-->
-    <!--		<property name="populators">-->
-    <!--			<list>-->
-    <!--				<ref bean="orderSolrPopulator" />-->
-    <!--			</list>-->
-    <!--		</property>-->
-    <!--	</bean>-->
-    <!--	<bean id="orderSolrFacade" class="com.commerceootb.facades.facadeImpl.OrderFacadeImpl">-->
-    <!--		<property name="orderSolrConverter" ref="orderSolrConverter"/>-->
-    <!--	</bean>-->
 
     <alias name="productRefPopulator" alias="searchResultProductPopulator"/>
     <bean id="productRefPopulator" class="com.commerceootb.facades.populators.ProductRefPopulator">
@@ -348,5 +337,19 @@
     <bean id="customOrderPopulator" class="com.commerceootb.facades.populators.CustomOrderPopulator"
           parent="defaultOrderPopulator">
         <property name="deliveryInstructionConverter" ref="deliveryInstructionConverter"/>
+    </bean>
+
+
+    <bean id="basicKycPopulator" class="com.commerceootb.facades.populators.BasicKycPopulator"/>
+
+    <alias name="defaultKycConfiguredPopulator" alias="kycConfiguredPopulator"/>
+    <bean id="defaultKycConfiguredPopulator"
+          class="de.hybris.platform.converters.impl.DefaultModifableConfigurablePopulator">
+        <property name="populators">
+            <map key-type="de.hybris.platform.commercefacades.product.ProductOption">
+                <entry key="BASIC" value-ref="basicKycPopulator"/>
+                <entry key="SUMMARY" value-ref="kycPopulator"/>
+            </map>
+        </property>
     </bean>
 </beans>

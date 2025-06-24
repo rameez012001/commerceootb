@@ -2,7 +2,6 @@ package com.commerceootbocc.controllers;
 
 import com.commerceootb.facades.facadeImpl.CustomProductFacade;
 import de.hybris.platform.commercefacades.product.ProductFacade;
-import de.hybris.platform.commercefacades.product.impl.DefaultProductFacade;
 import de.hybris.platform.commercewebservicescommons.dto.product.ProductWsDTO;
 import de.hybris.platform.commercefacades.product.ProductOption;
 import de.hybris.platform.commercefacades.product.data.ProductData;
@@ -41,8 +40,8 @@ public class CustomProductController {
     @ApiBaseSiteIdParam
     public ProductWsDTO getProductByCode(@PathVariable final String productCode,@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields) throws ConversionException
     {
-        final ProductData product = getProductFacade().getProductForCodeAndOptions(productCode, EnumSet.allOf(ProductOption.class));
-        return getDataMapper().map(product, ProductWsDTO.class,fields);
+        final ProductData productData = getProductFacade().getProductForCodeAndOptions(productCode, EnumSet.allOf(ProductOption.class));
+        return getDataMapper().map(productData, ProductWsDTO.class,fields);
     }
 
     public DataMapper getDataMapper() {

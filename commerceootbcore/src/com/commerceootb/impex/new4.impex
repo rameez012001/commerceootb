@@ -1,0 +1,75 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]
+                               ; OutboundOrder
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code)     ; root[default = false]
+                                   ; OutboundOrder                         ; Catalog            ; Catalog        ;
+                                   ; OutboundOrder                         ; CatalogVersion     ; CatalogVersion ;
+                                   ; OutboundOrder                         ; Order              ; Order          ; true
+                                   ; OutboundOrder                         ; OrderEntry         ; OrderEntry     ;
+                                   ; OutboundOrder                         ; Product            ; Product        ;
+                                   ; OutboundOrder                         ; Currency           ; Currency       ;
+                                   ; OutboundOrder                         ; Address            ; Address        ;
+
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]
+                                            ; OutboundOrder:Catalog                                              ; id                          ; Catalog:id                                         ;
+                                            ; OutboundOrder:CatalogVersion                                       ; catalog                     ; CatalogVersion:catalog                             ; OutboundOrder:Catalog
+                                            ; OutboundOrder:CatalogVersion                                       ; version                     ; CatalogVersion:version                             ;
+                                            ; OutboundOrder:Currency                                             ; isocode                     ; Currency:isocode                                   ;
+                                            ; OutboundOrder:Product                                              ; code                        ; Product:code                                       ;
+                                            ; OutboundOrder:Product                                              ; catalogVersion              ; Product:catalogVersion                             ; OutboundOrder:CatalogVersion                              ; true
+                                            ; OutboundOrder:Address                                              ; postalcode                  ; Address:postalcode                                 ;
+                                            ; OutboundOrder:Address                                              ; appartment                  ; Address:appartment                                 ;
+                                            ; OutboundOrder:Order                                                ; code                        ; Order:code                                         ;
+                                            ; OutboundOrder:Order                                                ; currency                    ; Order:currency                                     ; OutboundOrder:Currency                                    ; true
+                                            ; OutboundOrder:Order                                                ; deliveryAddress             ; Order:deliveryAddress                              ; OutboundOrder:Address                                     ; true
+                                            ; OutboundOrder:Order                                                ; totalPrice                  ; Order:totalPrice                                   ;
+                                            ; OutboundOrder:Order                                                ; entries                     ; Order:entries                                      ; OutboundOrder:OrderEntry
+                                            ; OutboundOrder:OrderEntry                                           ; entryNumber                 ; OrderEntry:entryNumber                             ;                                                           ; true
+                                            ; OutboundOrder:OrderEntry                                           ; product                     ; OrderEntry:product                                 ; OutboundOrder:Product
+
+INSERT_UPDATE BasicCredential; id[unique = true]     ; username; password
+                             ; springBasicCredential ; admin   ; nimda
+
+INSERT_UPDATE Endpoint; id[unique = true]; version[unique = true]; name                 ; specUrl
+                      ; springEndpoint   ; version1              ; requiredEndpointName ; http://localhost:8080/orders/getDataFromHybris
+INSERT_UPDATE DestinationTarget; id[unique = true]
+                               ; springDestination
+INSERT_UPDATE ConsumedDestination; id[unique = true]        ; url                                            ; endpoint(id, version)   ; credential(id)        ; destinationTarget(id)
+                                 ; orderConsumedDestination ; http://localhost:8080/orders/getDataFromHybris ; springEndpoint:version1 ; springBasicCredential ; springDestination
+
+
+#<requires-extension name="outboundservices"/>
+
+
+
+
+#For GetProductToOOTB
+INSERT_UPDATE DestinationTarget; id[unique = true]             ; destinationChannel(code)[default = DEFAULT]
+                               ; getProductsCengageDestination ;
+
+INSERT_UPDATE Endpoint; id[unique = true]          ; version; specUrl                                                                     ; name
+                      ; getProductsCengageEndPoint ; v1     ; "http://localhost:9002/emartstorefront/electronics/en/bulkOrder/getProduct" ; getProductsCengageEndPoint
+
+INSERT_UPDATE ConsumedOAuthCredential; id[unique = true]       ; clientId                 ; clientSecret            ; oAuthUrl
+                                     ; getProductsCengageOauth ; STOR-1DL6-DEE5-35NT-EXZD ; VAL-1NL6-DEE5-1NM9-Z55N ; "https://localhost:60021/authorizationserver/oauth/token"
+
+INSERT_UPDATE ConsumedDestination; id[unique = true]                     ; url                                                                                   ; endpoint(id)               ; destinationTarget(id)[unique = true]; credential(id)
+                                 ; getProductsCengageConsumedDestination ; "https://localhost:60021/occ/v2/cengage-b2c-emea/cngproducts/productCode?fields=FULL" ; getProductsCengageEndPoint ; getProductsCengageDestination       ; getProductsCengageOauth
+
+
+
+
+$lang = en
+
+INSERT_UPDATE RuleActionDefinitionCategory; id[unique = true]; name[lang = $lang]; priority
+                                          ; cart_discounts   ; cart_discounts    ; 700
+
+INSERT_UPDATE RuleActionDefinition; id[unique = true]           ; name[lang = $lang]                ; priority; breadcrumb[lang = $lang]          ; translatorId                   ; translatorParameters                    ; categories(id)
+                                  ; orderDiscountOnDeliveryCost ; order Discount With Delivery Cost ; 3000    ; order Discount With Delivery Cost ; ruleExecutableActionTranslator ; actionId-> deliveryMethodDiscountAction ; cart_discounts
+
+INSERT_UPDATE RuleActionDefinitionParameter; definition(id)[unique = true]; id[unique = true]; priority; name[lang = $lang]          ; description[lang = $lang] ; type                 ; value; required[default = true]
+                                           ; orderDiscountOnDeliveryCost  ; value            ; 1000    ; orderDiscountOnDeliveryCost ; discount on delivery cost ; ItemType(BigDecimal) ;      ;
+
+INSERT_UPDATE RuleActionDefinitionRuleTypeMapping; definition(id)[unique = true]; ruleType(code)[default = PromotionSourceRule][unique = true]
+                                                 ; orderDiscountOnDeliveryCost  ;

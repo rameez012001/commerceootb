@@ -1,0 +1,33 @@
+# Import config properties into impex macros
+UPDATE GenericItem[processor = de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor]; pk[unique = true]
+
+
+# Currency IMPEX
+INSERT_UPDATE Currency; isocode[unique = true]; name[lang = en]; active; base ; conversion; digits; symbol
+                      ; INR                   ; rupee          ; true  ; true ; 1         ; 2     ; ₹
+#  Warehouse IMPEX
+
+
+# Base Site IMPEX
+$contentCatalog = apparel-ukContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+$siteUid = apparel-in
+$lang = en
+$storeUid = apparel-uk
+$storefrontContextRoot = $config-storefrontContextRoot
+$promoGrp = __DEFAULT_PROMO_GRP__
+$defaultLanguage = en
+$productCatalog = apparelProductCatalog
+
+INSERT_UPDATE CMSSite; uid[unique = true]; theme(code); channel(code); stores(uid); contentCatalogs(id); defaultCatalog(id); defaultLanguage(isoCode); siteMapConfig(&siteMapConfigId); urlPatterns                                                                                                                                                                                          ; active; previewURL                            ; startingPage(uid, $contentCV); urlEncodingAttributes; defaultPromotionGroup(Identifier)[default = $promoGrp]
+                     ; $siteUid          ; blue       ; B2C          ; $storeUid  ; $contentCatalog    ; $productCatalog   ; $defaultLanguage        ; $storeUidSiteMapConfig         ; (?i)^https?://[^/]+(/[^?]*)?\?(.*\&)?(site=$siteUid)(|\&.*)$,(?i)^https?://$siteUid\.[^/]+(|/.*|\?.*)$,(?i)^https?://api\.hybrisdev\.com(:[\d]+)?/rest/.*$,(?i)^https?://localhost(:[\d]+)?/rest/.*$ ; true  ; $storefrontContextRoot/?site=$siteUid ; homepage                     ; storefront,language
+
+$productCatalog = apparelProductCatalog
+$catalogVersion = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+
+# Language
+$lang = en
+
+# Update All Products of powertoolsProductCatalog Staged version
+UPDATE Product[batchmode = true]; $catalogVersion; issearchable;
+                                ;                ; true;

@@ -13,6 +13,7 @@ public class ProductPriceValueResolver extends ModelAttributesValueResolver<Prod
     @Override
     protected Object getAttributeValue(IndexedProperty indexedProperty, ProductModel model, String attributeName) throws FieldValueProviderException {
         Collection<ProductReferenceModel> productReferences = model.getProductReferences();
-        return productReferences.stream().filter(ref->ref.getReferenceType().equals(ProductReferenceTypeEnum.BUNDLE)).map(ref->ref.getTarget().getEurope1Prices().stream().findFirst().get().getPrice()).toList();
+//        return productReferences.stream().filter(ref->ref.getReferenceType().equals(ProductReferenceTypeEnum.BUNDLE)).map(ref->ref.getTarget().getEurope1Prices().stream().findFirst().get().getPrice()).toList();
+        return null;
     }
 }

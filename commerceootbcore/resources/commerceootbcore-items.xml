@@ -386,9 +386,11 @@
                     </attribute>
                 </attributes>
             </itemtype>
+
             <itemtype code="KycProcess" extends="BusinessProcess" autocreate="true">
 
             </itemtype>
+
             <itemtype code="KycEmailProcess" extends="StoreFrontCustomerProcess" autocreate="true">
                 <attributes>
                     <attribute qualifier="kycDetail" type="KycDetails">

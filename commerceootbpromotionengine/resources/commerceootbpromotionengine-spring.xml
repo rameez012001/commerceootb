@@ -2,13 +2,22 @@
 <!--
  Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved.
 -->
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+<!--       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--       xmlns:util="http://www.springframework.org/schema/util"-->
+<!--       xmlns:aop="http://www.springframework.org/schema/aop"-->
+<!--       xsi:schemaLocation="http://www.springframework.org/schema/beans-->
+<!--           http://www.springframework.org/schema/beans/spring-beans.xsd-->
+<!--           http://www.springframework.org/schema/aop-->
+<!--           http://www.springframework.org/schema/aop/spring-aop.xsd">-->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans.xsd
-           http://www.springframework.org/schema/aop
-           http://www.springframework.org/schema/aop/spring-aop.xsd">
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!--
     The hybris platform provides one single Spring application context for beans located at the jalo layer.
@@ -100,47 +109,112 @@
           class="com.commerceootbpromotionengine.populator.CustomerReviewRaoPopulator">
     </bean>
 
-    <alias name="promotionEngineUserRaoPopulator" alias="promotionEngineUserRaoPopulator" />
-    <bean id="promotionEngineUserRaoPopulator" class="com.commerceootbpromotionengine.populator.PromotionEngineUserRaoPopulator" >
-        <property name="customerReviewConverter" ref="customerReviewRaoConverter" />
+    <alias name="promotionEngineUserRaoPopulator" alias="promotionEngineUserRaoPopulator"/>
+    <bean id="promotionEngineUserRaoPopulator"
+          class="com.commerceootbpromotionengine.populator.PromotionEngineUserRaoPopulator">
+        <property name="customerReviewConverter" ref="customerReviewRaoConverter"/>
     </bean>
 
     <bean parent="modifyPopulatorList">
-        <property name="list" ref="userRaoConverter" />
-        <property name="add" ref="promotionEngineUserRaoPopulator" />
+        <property name="list" ref="userRaoConverter"/>
+        <property name="add" ref="promotionEngineUserRaoPopulator"/>
     </bean>
 
     <alias name="defaultCustomerReviewRaoExtractor" alias="customerReviewRaoExtractor"/>
-    <bean id="defaultCustomerReviewRaoExtractor" class="com.commerceootbpromotionengine.providers.CustomerReviewRaoExtractor"/>
+    <bean id="defaultCustomerReviewRaoExtractor"
+          class="com.commerceootbpromotionengine.providers.CustomerReviewRaoExtractor"/>
 
-    <bean id="promotionEngineTrailcartRAOProviderExtractorsListMergeDirective" depends-on="cartRAOProviderExtractors" parent="listMergeDirective">
+    <bean id="promotionEngineTrailcartRAOProviderExtractorsListMergeDirective" depends-on="cartRAOProviderExtractors"
+          parent="listMergeDirective">
         <property name="add" ref="customerReviewRaoExtractor"/>
     </bean>
 
-    <alias alias="addUserToUserGroupRAOAction" name="defaultAddUserToUserGroupRAOAction" />
-    <bean id="defaultAddUserToUserGroupRAOAction" parent="abstractRuleExecutableSupport" class="com.commerceootbpromotionengine.rule.action.impl.AddUserToUserGroupRAOAction"/>
+    <alias alias="addUserToUserGroupRAOAction" name="defaultAddUserToUserGroupRAOAction"/>
+    <bean id="defaultAddUserToUserGroupRAOAction" parent="abstractRuleExecutableSupport"
+          class="com.commerceootbpromotionengine.rule.AddUserToUserGroupRAOAction"/>
 
-    <alias alias="addUserToUserGroupAction" name="defaultAddUserToUserGroupAction" />
-    <bean id="defaultAddUserToUserGroupAction" class="de.hybris.platform.ruledefinitions.actions.DefaultRuleExecutableAction">
+    <alias alias="addUserToUserGroupAction" name="defaultAddUserToUserGroupAction"/>
+    <bean id="defaultAddUserToUserGroupAction"
+          class="de.hybris.platform.ruledefinitions.actions.DefaultRuleExecutableAction">
         <property name="raoAction" ref="addUserToUserGroupRAOAction"/>
     </bean>
 
     <alias name="defaultAddUserToUserGroupActionStrategy" alias="addUserToUserGroupActionStrategy"/>
-    <bean id="defaultAddUserToUserGroupActionStrategy" parent="abstractRuleActionStrategy" class="com.commerceootbpromotionengine.action.DefaultAddUserToUserGroupActionStrategy" >
-        <property name="promotionAction" value="de.hybris.promotionenginetrail.model.RuleBasedAddUserToUserGroupActionModel"/>
-        <property name="userService" ref="userService" />
+    <bean id="defaultAddUserToUserGroupActionStrategy" parent="abstractRuleActionStrategy"
+          class="com.commerceootbpromotionengine.action.DefaultAddUserToUserGroupActionStrategy">
+        <property name="promotionAction"
+                  value="de.hybris.promotionenginetrail.model.RuleBasedAddUserToUserGroupActionModel"/>
+        <property name="userService" ref="userService"/>
     </bean>
 
     <bean id="promotionenginetrailActionStrategies" depends-on="actionStrategies" parent="listMergeDirective">
-        <property name="add" ref="defaultAddUserToUserGroupActionStrategy" />
+        <property name="add" ref="defaultAddUserToUserGroupActionStrategy"/>
     </bean>
 
-    <bean id="promotionenginetrailPromotionActionStrategiesMapping" depends-on="promotionActionStrategiesMapping" parent="mapMergeDirective">
-        <property name="key" value="defaultAddUserToUserGroupRAOAction" />
-        <property name="value" ref="defaultAddUserToUserGroupActionStrategy" />
+    <bean id="promotionenginetrailPromotionActionStrategiesMapping" depends-on="promotionActionStrategiesMapping"
+          parent="mapMergeDirective">
+        <property name="key" value="defaultAddUserToUserGroupRAOAction"/>
+        <property name="value" ref="defaultAddUserToUserGroupActionStrategy"/>
     </bean>
 
-    <alias alias="ruleCustomerReviewTranslator" name="defaultRuleCustomerReviewTranslator" />
-    <bean id="defaultRuleCustomerReviewTranslator" class="com.commerceootbpromotionengine.translator.RuleCustomerReviewTranslator"/>
+    <alias alias="ruleCustomerReviewTranslator" name="defaultRuleCustomerReviewTranslator"/>
+    <bean id="defaultRuleCustomerReviewTranslator"
+          class="com.commerceootbpromotionengine.translator.RuleCustomerReviewTranslator"/>
+
+<!-- &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+
+    <bean id="customDeliveryModeCodePopulator"
+          class="com.commerceootbpromotionengine.populator.CustomDeliveryModeCodePopulator">
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="cartRaoConverter"/>
+        <property name="add" ref="customDeliveryModeCodePopulator"/>
+    </bean>
+
+    <bean id="deliveryMethodDiscountRaoAction" parent="abstractRuleExecutableSupport"
+          class="com.commerceootbpromotionengine.rule.DeliveryMethodDiscountRaoAction">
+        <property name="customRuleEngineCalculationService" ref="customRuleEngineCalculationService"/>
+    </bean>
+
+    <alias name="customDeliveryMethodDiscountRaoAction" alias="deliveryMethodDiscountAction"/>
+    <bean id="customDeliveryMethodDiscountRaoAction"
+          class="de.hybris.platform.ruledefinitions.actions.DefaultRuleExecutableAction">
+        <property name="raoAction" ref="deliveryMethodDiscountRaoAction"/>
+    </bean>
+
+    <alias name="customPercentageDiscountOnDeliveryActionStrategy" alias="customPercentageDiscountOnDeliveryActionStrategy"/>
+    <bean id="customPercentageDiscountOnDeliveryActionStrategy" parent="abstractRuleActionStrategy"
+          class="com.commerceootbpromotionengine.action.CustomPercentageDiscountOnDeliveryActionStrategy">
+        <property name="promotionAction" value="de.hybris.platform.promotionengineservices.model.RuleBasedPercentageDiscountOnDeliveryModeActionModel"/>
+        <property name="deliveryModeDao" ref="deliveryModeDao"/>
+    </bean>
+
+    <bean id="customPercentageDiscountOnDeliveryActionStrategyMapping" depends-on="actionStrategies"
+          parent="listMergeDirective">
+        <property name="add" ref="customPercentageDiscountOnDeliveryActionStrategy"/>
+    </bean>
+
+
+    <bean id="deliveryMethodDiscountRaoActionMapping" depends-on="promotionActionStrategiesMapping"
+          parent="mapMergeDirective">
+        <property name="key" value="deliveryMethodDiscountRaoAction"/>
+        <property name="value" ref="customPercentageDiscountOnDeliveryActionStrategy"/>
+    </bean>
+
+    <alias name="customRuleEngineCalculationService" alias="ruleEngineCalculationService"/>
+    <bean id="customRuleEngineCalculationService"
+          class="com.commerceootbpromotionengine.calculation.CustomRuleEngineCalculationService">
+        <property name="abstractOrderRaoToOrderConverter" ref="abstractOrderRaoToOrderConverter"/>
+        <property name="minimumAmountValidationStrategy" ref="minimumAmountValidationStrategy"/>
+        <property name="raoUtils" ref="raoUtils"/>
+        <property name="orderUtils" ref="orderUtils"/>
+        <property name="currencyUtils" ref="currencyUtils"/>
+        <property name="consumptionSupport" ref="raoConsumptionSupport"/>
+        <property name="lineItemLookupStrategy" ref="numberedLineItemLookupStrategy"/>
+        <property name="orderEntryRaoProductPopulator" ref="orderEntryRaoProductPopulator"/>
+    </bean>
+
+
 
 </beans>

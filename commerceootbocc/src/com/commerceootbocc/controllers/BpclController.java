@@ -11,12 +11,12 @@ import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdParam;
 import de.hybris.platform.webservicescommons.swagger.ApiFieldsParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "BPCL")
@@ -30,9 +30,6 @@ public class BpclController {
     private BpclFacade bpclFacade;
 
     @GetMapping(value = "/{id}")
-    @RequestMappingOverride(priorityProperty = "99")
-    @ResponseBody
-    @Operation(operationId = "getProduct", summary = "Retrieves product details.", description = "Retrieves the details of a single product using the product identifier.")
     @ApiBaseSiteIdParam
     public BpclWsDto getBpclByCode(@PathVariable final String id, @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields) throws ConversionException
     {
@@ -46,7 +43,7 @@ public class BpclController {
     public List<BpclWsDto> getBpclData(@ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields) throws ConversionException
     {
         final List<BpclData> bpclData = Optional.ofNullable(getBpclFacade().getAllBpclData()).orElse(Collections.emptyList());
-        return bpclData.stream().map(data->getDataMapper().map(data,BpclWsDto.class,fields)).toList();
+        return bpclData.stream().map(data->getDataMapper().map(data,BpclWsDto.class,fields)).collect(Collectors.toList());
     }
 
     public DataMapper getDataMapper() {

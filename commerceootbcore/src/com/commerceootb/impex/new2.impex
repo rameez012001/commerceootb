@@ -39,4 +39,29 @@ $solrIndexedType = electronicsProductType
 
 # impex for indexing alias attribute
 INSERT_UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; type(code); sortableType(code); currency[default = false]; localized[default = false]; multiValue[default = false]; useForSpellchecking[default = false]; useForAutocomplete[default = false]; fieldValueProvider; valueProviderParameter
-                                 ; $solrIndexedType                          ; isSearchable       ; boolean   ;                   ;                          ;                           ;                            ;                                 ;                                ;                   ;
+                                 ; $solrIndexedType                          ; isSearchable       ; boolean   ;                   ;                          ;                           ;                            ;                                     ;                                    ;                   ;
+
+
+$contentCatalog = electronicsContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+
+INSERT_UPDATE CMSUserRestriction; $contentCV[unique = true]; uid[unique = true]    ; name                    ; users(uid)      ; components(uid, catalogVersion(catalog(id), version)); &componentRef
+                                ;                          ; CustomUserRestriction ; Custom User Restriction ; john1@gmail.com ; samsungS10OfferComponent:$contentCatalog:Staged      ; CustomUserRestriction
+
+
+INSERT_UPDATE CMSUserGroupRestriction; $contentCV[unique = true]; uid[unique = true]    ; name                          ; userGroups(uid)               ; includeSubgroups; components(uid, catalogVersion(catalog(id), version))
+                                     ;                          ; OfferGroupRestriction ; Reviewed Customer Offer Group ; reviewedProductsCustomerGroup ; true            ; samsungS10OfferComponent:$contentCatalog:Staged
+
+#---------------------------------------------------
+
+$contentCatalog = electronicsProductCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Online])[default = $contentCatalog:Online]
+
+INSERT_UPDATE AsCategoryAwareSearchProfile; code[unique = true]           ; name[lang = en]                       ; indexType              ; $contentCV[unique = true]
+                                          ; customElectronicSearchProfile ; Custom search profile for electronics ; electronicsProductType ;
+
+INSERT_UPDATE AsCategoryAwareSearchConfiguration; searchProfile(code, $contentCV)[unique = true]; uid[unique = true]                  ; category(code, $contentCV); facetsMergeMode(code); boostItemsMergeMode(code); boostRulesMergeMode(code); sortsMergeMode(code); $contentCV[unique = true]
+                                                ; customElectronicSearchProfile                 ; customElectronicSearchConfiguration ;                           ; ADD_AFTER            ; ADD_AFTER                ; ADD                      ; ADD_AFTER           ;
+
+INSERT_UPDATE AsFacet; searchConfiguration(uid, $contentCV); uid[unique = true]          ; indexProperty; facetType(code); priority; $contentCV[unique = true]; ranged[default = false]
+                     ; customElectronicSearchConfiguration ; customElectronicSearchFacet ; brand ; REFINE         ; 100     ;                          ;

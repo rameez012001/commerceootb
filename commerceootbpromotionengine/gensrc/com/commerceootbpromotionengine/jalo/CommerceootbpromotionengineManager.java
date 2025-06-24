@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Apr 8, 2025, 3:36:40 PM                     ---
+ * --- Generated at 13-Jun-2025, 5:56:09 pm                     ---
  * ----------------------------------------------------------------
  */
 package com.commerceootbpromotionengine.jalo;
@@ -18,6 +18,7 @@ import de.hybris.platform.jalo.extension.Extension;
 import de.hybris.platform.jalo.extension.ExtensionManager;
 import de.hybris.platform.jalo.type.ComposedType;
 import de.hybris.platform.jalo.type.JaloGenericCreationException;
+import de.hybris.platform.promotionengineservices.jalo.RuleBasedPercentageDiscountOnDeliveryModeAction;
 import de.hybris.promotionenginetrail.jalo.RuleBasedAddUserToUserGroupAction;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,6 +72,32 @@ public class CommerceootbpromotionengineManager extends Extension
 	public RuleBasedAddUserToUserGroupAction createRuleBasedAddUserToUserGroupAction(final Map attributeValues)
 	{
 		return createRuleBasedAddUserToUserGroupAction( getSession().getSessionContext(), attributeValues );
+	}
+	
+	public RuleBasedPercentageDiscountOnDeliveryModeAction createRuleBasedPercentageDiscountOnDeliveryModeAction(final SessionContext ctx, final Map attributeValues)
+	{
+		try
+		{
+			ComposedType type = getTenant().getJaloConnection().getTypeManager().getComposedType("RuleBasedPercentageDiscountOnDeliveryModeAction");
+			return (RuleBasedPercentageDiscountOnDeliveryModeAction)type.newInstance( ctx, attributeValues );
+		}
+		catch( JaloGenericCreationException e)
+		{
+			final Throwable cause = e.getCause();
+			throw (cause instanceof RuntimeException ?
+			(RuntimeException)cause
+			:
+			new JaloSystemException( cause, cause.getMessage(), e.getErrorCode() ) );
+		}
+		catch( JaloBusinessException e )
+		{
+			throw new JaloSystemException( e ,"error creating RuleBasedPercentageDiscountOnDeliveryModeAction : "+e.getMessage(), 0 );
+		}
+	}
+	
+	public RuleBasedPercentageDiscountOnDeliveryModeAction createRuleBasedPercentageDiscountOnDeliveryModeAction(final Map attributeValues)
+	{
+		return createRuleBasedPercentageDiscountOnDeliveryModeAction( getSession().getSessionContext(), attributeValues );
 	}
 	
 	public static final CommerceootbpromotionengineManager getInstance()

@@ -57,5 +57,46 @@
 				</attribute>
 			</attributes>
 		</itemtype>
+
+		<itemtype code="RuleBasedPercentageDiscountOnDeliveryModeAction"
+				  extends="AbstractRuleBasedPromotionAction"
+				  jaloclass="de.hybris.platform.promotionengineservices.jalo.RuleBasedPercentageDiscountOnDeliveryModeAction"
+				  autocreate="true"
+				  generate="true">
+			<attributes>
+				<attribute
+						qualifier="deliveryMode"
+						autocreate="true"
+						type="DeliveryMode">
+					<description>The delivery mode to apply to the order</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute
+						qualifier="deliveryCost"
+						autocreate="true"
+						type="java.math.BigDecimal">
+					<description>The delivery cost to apply to the order</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute
+						qualifier="replacedDeliveryMode"
+						autocreate="true"
+						type="DeliveryMode">
+					<description>The delivery mode that was set to order before a promotion was applied</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute
+						qualifier="replacedDeliveryCost"
+						autocreate="true"
+						type="java.math.BigDecimal">
+					<description>The delivery cost that was set to order before a promotion was applied</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
 	</itemtypes>
 </items>

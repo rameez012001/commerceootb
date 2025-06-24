@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:file="http://www.springframework.org/schema/integration/file"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+    <bean id="baseDirectoryProduct" class="java.lang.String">
+        <constructor-arg value="#{baseDirectory}/${tenantId}/product" />
+    </bean>
+
+    <!-- 1) Scan for files -->
+    <!-- Inbound gateway -->
+    <file:inbound-channel-adapter id="batchFilesProduct" directory="#{baseDirectoryProduct}"
+                                  filename-regex="^(.*)-(\d+)\.csv" comparator="fileOrderComparator">
+        <int:poller fixed-rate="1000" />
+    </file:inbound-channel-adapter>
+
+    <!-- 2) move the file to processing and setup header -->
+    <!-- Outbound   -->
+    <file:outbound-gateway request-channel="batchFilesProduct" reply-channel="batchFilesProductProc"
+                           directory="#{baseDirectoryProduct}/processing" delete-source-files="true" />
+
+    <int:service-activator input-channel="batchFilesProductProc" output-channel="batchFilesHeaderInit"
+                           ref="productHeaderSetupTask" method="execute" />
+    <bean id="productHeaderSetupTask" class="de.hybris.platform.acceleratorservices.dataimport.batch.task.HeaderSetupTask">
+        <property name="storeBaseDirectory" ref="baseDirectoryProduct" />
+    </bean>
+
+    <!-- Transformer converters mappings -->
+    <bean id="batchProductConverterMapping"
+          class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.mapping.impl.DefaultConverterMapping"
+          p:mapping="product"
+          p:converter-ref="batchProductConverter"/>
+
+    <!-- Product converters -->
+    <bean id="batchProductConverter" parent="abstractDefaultImpexConverter">
+        <property name="header">
+            <value>#{defaultImpexProductHeader}
+            $catalog=electronicsProductCatalog
+            $version=Staged
+            $catalogVersion=catalogversion(catalog(id),version)[unique=true,default=$catalog:$version]
+            # Insert Product
+            INSERT_UPDATE Product; code[unique = true]; name; description;$catalogVersion
+            </value>
+        </property>
+        <property name="impexRow">
+            <value>;{+0};{1};{2};{3}</value>
+        </property>
+        <property name="type" value="Product"/>
+    </bean>
+
+</beans>

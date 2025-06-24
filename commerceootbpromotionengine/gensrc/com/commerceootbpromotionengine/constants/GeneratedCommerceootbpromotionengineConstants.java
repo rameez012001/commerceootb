@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Apr 8, 2025, 3:36:40 PM                     ---
+ * --- Generated at 13-Jun-2025, 5:56:09 pm                     ---
  * ----------------------------------------------------------------
  */
 package com.commerceootbpromotionengine.constants;
@@ -17,6 +17,7 @@ public class GeneratedCommerceootbpromotionengineConstants
 	public static class TC
 	{
 		public static final String RULEBASEDADDUSERTOUSERGROUPACTION = "RuleBasedAddUserToUserGroupAction".intern();
+		public static final String RULEBASEDPERCENTAGEDISCOUNTONDELIVERYMODEACTION = "RuleBasedPercentageDiscountOnDeliveryModeAction".intern();
 	}
 	public static class Attributes
 	{

@@ -56,11 +56,6 @@
         <property name="impexRow">
             <value>;{+0};{1};{2};{3};{4};{5};{6}</value>
         </property>
-<!--        <property name="rowFilter">-->
-<!--            <bean class="de.hybris.platform.acceleratorservices.dataimport.batch.converter.impl.DefaultImpexRowFilter">-->
-<!--                <property name="expression" value="row[1]"/>-->
-<!--            </bean>-->
-<!--        </property>-->
         <property name="type" value="KycDetails"/>
     </bean>
 
