@@ -1,32 +1,26 @@
 INSERT_UPDATE IntegrationObject; code[unique = true]
                                ; OutboundOrder
 
-INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code)     ; root[default = false]
-                                   ; OutboundOrder                         ; Catalog            ; Catalog        ;
-                                   ; OutboundOrder                         ; CatalogVersion     ; CatalogVersion ;
-                                   ; OutboundOrder                         ; Order              ; Order          ; true
-                                   ; OutboundOrder                         ; OrderEntry         ; OrderEntry     ;
-                                   ; OutboundOrder                         ; Product            ; Product        ;
-                                   ; OutboundOrder                         ; Currency           ; Currency       ;
-                                   ; OutboundOrder                         ; Address            ; Address        ;
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code) ; root[default = false]
+                                   ; OutboundOrder                         ; Order              ; Order      ; true
+                                   ; OutboundOrder                         ; OrderEntry         ; OrderEntry ;
+                                   ; OutboundOrder                         ; Product            ; Product    ;
+                                   ; OutboundOrder                         ; Address            ; Address    ;
 
 
 INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]
-                                            ; OutboundOrder:Catalog                                              ; id                          ; Catalog:id                                         ;
-                                            ; OutboundOrder:CatalogVersion                                       ; catalog                     ; CatalogVersion:catalog                             ; OutboundOrder:Catalog
-                                            ; OutboundOrder:CatalogVersion                                       ; version                     ; CatalogVersion:version                             ;
-                                            ; OutboundOrder:Currency                                             ; isocode                     ; Currency:isocode                                   ;
                                             ; OutboundOrder:Product                                              ; code                        ; Product:code                                       ;
-                                            ; OutboundOrder:Product                                              ; catalogVersion              ; Product:catalogVersion                             ; OutboundOrder:CatalogVersion                              ; true
                                             ; OutboundOrder:Address                                              ; postalcode                  ; Address:postalcode                                 ;
+                                            ; OutboundOrder:Address                                              ; email                       ; Address:email                                      ;                                                           ; true
                                             ; OutboundOrder:Address                                              ; appartment                  ; Address:appartment                                 ;
+                                            ; OutboundOrder:OrderEntry                                           ; entryNumber                 ; OrderEntry:entryNumber                             ;                                                           ; true
+                                            ; OutboundOrder:OrderEntry                                           ; product                     ; OrderEntry:product                                 ; OutboundOrder:Product
+                                            ; OutboundOrder:OrderEntry                                           ; quantity                    ; OrderEntry:quantity                                ;                                                           ; true
                                             ; OutboundOrder:Order                                                ; code                        ; Order:code                                         ;
-                                            ; OutboundOrder:Order                                                ; currency                    ; Order:currency                                     ; OutboundOrder:Currency                                    ; true
                                             ; OutboundOrder:Order                                                ; deliveryAddress             ; Order:deliveryAddress                              ; OutboundOrder:Address                                     ; true
                                             ; OutboundOrder:Order                                                ; totalPrice                  ; Order:totalPrice                                   ;
                                             ; OutboundOrder:Order                                                ; entries                     ; Order:entries                                      ; OutboundOrder:OrderEntry
-                                            ; OutboundOrder:OrderEntry                                           ; entryNumber                 ; OrderEntry:entryNumber                             ;                                                           ; true
-                                            ; OutboundOrder:OrderEntry                                           ; product                     ; OrderEntry:product                                 ; OutboundOrder:Product
 
 INSERT_UPDATE BasicCredential; id[unique = true]     ; username; password
                              ; springBasicCredential ; admin   ; nimda
@@ -73,3 +67,59 @@ INSERT_UPDATE RuleActionDefinitionParameter; definition(id)[unique = true]; id[u
 
 INSERT_UPDATE RuleActionDefinitionRuleTypeMapping; definition(id)[unique = true]; ruleType(code)[default = PromotionSourceRule][unique = true]
                                                  ; orderDiscountOnDeliveryCost  ;
+
+
+
+#For GetProductToOOTB
+INSERT_UPDATE DestinationTarget; id[unique = true]; destinationChannel(code)[default = DEFAULT]
+                               ; SpringERP        ;
+
+INSERT_UPDATE Endpoint; id[unique = true] ; version; specUrl                                          ; name
+                      ; SpringERPEndPoint ; v1     ; "http://localhost:8080/orders/getDataFromHybris" ; SpringERPEndPoint
+
+INSERT_UPDATE BasicCredential; id[unique = true]; username; password
+                             ; basicAuth        ; admin   ; nimda
+
+INSERT_UPDATE ConsumedDestination; id[unique = true]            ; url                                              ; endpoint(id)      ; destinationTarget(id)[unique = true]; credential(id)
+                                 ; SpringErpConsumedDestination ; "http://localhost:8080/orders/getDataFromHybris" ; SpringERPEndPoint ; SpringERP                           ; basicAuth
+
+
+
+INSERT_UPDATE IntegrationObject; code[unique = true]
+                               ; InboundConsignment
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code)        ; root[default = false]
+                                   ; InboundConsignment                    ; Order              ; Order             ;
+                                   ; InboundConsignment                    ; OrderEntry         ; OrderEntry        ;
+                                   ; InboundConsignment                    ; Consignment        ; Consignment       ; true
+                                   ; InboundConsignment                    ; ConsignmentStatus  ; ConsignmentStatus ;
+                                   ; InboundConsignment                    ; ConsignmentEntry   ; ConsignmentEntry  ;
+                                   ; InboundConsignment                    ; Address            ; Address           ;
+                                   ; InboundConsignment                    ; Warehouse          ; Warehouse         ;
+
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]
+                                            ; InboundConsignment:Address                                         ; addressId                   ; Address:addressId                                  ;                                                           ; true ;
+                                            ; InboundConsignment:Address                                         ; postalcode                  ; Address:postalcode                                 ;                                                           ;      ;
+                                            ; InboundConsignment:Address                                         ; email                       ; Address:email                                      ;                                                           ; false ;
+                                            ; InboundConsignment:Address                                         ; streetname                  ; Address:streetname                                 ;                                                           ;      ;
+                                            ; InboundConsignment:Address                                         ; streetnumber                ; Address:streetnumber                               ;                                                           ;      ;
+                                            ; InboundConsignment:Warehouse                                       ; code                        ; Warehouse:code                                     ;                                                           ;      ;
+                                            ; InboundConsignment:Consignment                                     ; shippingAddress             ; Consignment:shippingAddress                        ; InboundConsignment:Address                                ;
+                                            ; InboundConsignment:Consignment                                     ; warehouse                   ; Consignment:warehouse                              ; InboundConsignment:Warehouse                              ;
+
+                                            ; InboundConsignment:Order                                           ; code                        ; Order:code                                         ;
+                                            ; InboundConsignment:OrderEntry                                      ; entryNumber                 ; OrderEntry:entryNumber                             ;                                                           ; true
+                                            ; InboundConsignment:OrderEntry                                      ; quantity                    ; OrderEntry:quantity                                ;                                                           ; true
+                                            ; InboundConsignment:Consignment                                     ; code                        ; Consignment:code                                   ;                                                           ; true
+                                            ; InboundConsignment:Consignment                                     ; trackingID                  ; Consignment:trackingID                             ;
+                                            ; InboundConsignment:Consignment                                     ; status                      ; Consignment:status                                 ; InboundConsignment:ConsignmentStatus
+                                            ; InboundConsignment:Consignment                                     ; consignmentEntries          ; Consignment:consignmentEntries                     ; InboundConsignment:ConsignmentEntry
+
+                                            ; InboundConsignment:Consignment                                     ; order                       ; Consignment:order                                  ; InboundConsignment:Order
+
+
+                                            ; InboundConsignment:ConsignmentStatus                               ; status                      ; ConsignmentStatus:code                             ;
+                                            ; InboundConsignment:ConsignmentEntry                                ; quantity                    ; ConsignmentEntry:quantity                          ;
+                                            ; InboundConsignment:ConsignmentEntry                                ; shippedQuantity             ; ConsignmentEntry:shippedQuantity                   ;
+                                            ; InboundConsignment:ConsignmentEntry                                ; orderEntry                  ; ConsignmentEntry:orderEntry                        ; InboundConsignment:OrderEntry                             ; true

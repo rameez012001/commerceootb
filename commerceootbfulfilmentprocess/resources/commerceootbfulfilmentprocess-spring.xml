@@ -114,4 +114,6 @@
 		<property name="sessionService" ref="sessionService"/>
 	</bean>
 
+<!--	<bean id = "consignmentPrePersistHook" class="com.commerceootb.fulfilmentprocess.impl.ConsignmentPrePersistHook"/>-->
+
 </beans>

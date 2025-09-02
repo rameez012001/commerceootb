@@ -10,6 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="address" tagdir="/WEB-INF/tags/responsive/address" %>
 <%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags" %>
+<%@ taglib prefix="custom" tagdir="/WEB-INF/tags/responsive/custom" %>
 
 <spring:htmlEscape defaultHtmlEscape="true" />
 
@@ -25,7 +26,7 @@
                 <c:if test="${not empty paymentFormUrl}">
                     <div class="checkout-paymentmethod">
                         <div class="checkout-indent">
-
+                            <custom:klarnaPayment klarnaPayment= "hello"/>
                             <div class="headline"><spring:theme code="checkout.multi.paymentMethod"/></div>
 
 							    <ycommerce:testId code="paymentDetailsForm">

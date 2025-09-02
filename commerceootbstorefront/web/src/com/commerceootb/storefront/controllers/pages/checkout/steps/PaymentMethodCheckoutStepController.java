@@ -4,6 +4,7 @@
 package com.commerceootb.storefront.controllers.pages.checkout.steps;
 
 
+import com.commerceootb.facades.facadeService.KlarnaPaymentFacade;
 import de.hybris.platform.acceleratorservices.enums.CheckoutPciOptionEnum;
 import de.hybris.platform.acceleratorservices.payment.constants.PaymentConstants;
 import de.hybris.platform.acceleratorservices.payment.data.PaymentData;
@@ -39,15 +40,13 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import de.hybris.platform.order.CartService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -59,6 +58,11 @@ public class PaymentMethodCheckoutStepController extends AbstractCheckoutStepCon
 	private static final String PAYMENT_METHOD = "payment-method";
 	private static final String CART_DATA_ATTR = "cartData";
 
+	@Resource(name = "klarnaPaymentFacade")
+	private KlarnaPaymentFacade klarnaPaymentFacade;
+
+	@Resource(name = "cartService")
+	private CartService cartService;
 	private static final Logger LOGGER = Logger.getLogger(PaymentMethodCheckoutStepController.class);
 
 	@Resource(name = "addressDataUtil")
@@ -188,8 +192,7 @@ public class PaymentMethodCheckoutStepController extends AbstractCheckoutStepCon
 		return ControllerConstants.Views.Pages.MultiStepCheckout.AddPaymentMethodPage;
 	}
 
-	@RequestMapping(value =
-	{ "/add" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
 	@RequireHardLogIn
 	public String add(final Model model, @Valid final PaymentDetailsForm paymentDetailsForm, final BindingResult bindingResult)
 			throws CMSItemNotFoundException
@@ -412,4 +415,33 @@ public class PaymentMethodCheckoutStepController extends AbstractCheckoutStepCon
 		CYBERSOURCE_SOP_CARD_TYPES.put("maestro", "024");
 	}
 
+	@GetMapping("/klarna-payment")
+    public void createKPSession(){
+		Map<String, Object> kpSession = getKlarnaPaymentFacade().createKpSession();
+		LOGGER.info(kpSession);
+    }
+
+	public KlarnaPaymentFacade getKlarnaPaymentFacade() {
+		return klarnaPaymentFacade;
+	}
+
+	public void setKlarnaPaymentFacade(KlarnaPaymentFacade klarnaPaymentFacade) {
+		this.klarnaPaymentFacade = klarnaPaymentFacade;
+	}
+
+	public CartService getCartService() {
+		return cartService;
+	}
+
+	public void setCartService(CartService cartService) {
+		this.cartService = cartService;
+	}
+
+	public AddressDataUtil getAddressDataUtil() {
+		return addressDataUtil;
+	}
+
+	public void setAddressDataUtil(AddressDataUtil addressDataUtil) {
+		this.addressDataUtil = addressDataUtil;
+	}
 }

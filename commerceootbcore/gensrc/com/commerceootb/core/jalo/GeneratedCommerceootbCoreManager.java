@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at May 14, 2025, 4:53:38 PM                    ---
+ * --- Generated at 22-Aug-2025, 11:43:51 am                    ---
  * ----------------------------------------------------------------
  */
 package com.commerceootb.core.jalo;
@@ -38,6 +38,7 @@ import de.hybris.platform.jalo.product.Product;
 import de.hybris.platform.jalo.type.CollectionType;
 import de.hybris.platform.jalo.type.ComposedType;
 import de.hybris.platform.jalo.type.JaloGenericCreationException;
+import de.hybris.platform.jalo.user.Address;
 import de.hybris.platform.jalo.user.Customer;
 import de.hybris.platform.jalo.user.User;
 import de.hybris.platform.util.OneToManyHandler;
@@ -83,6 +84,9 @@ public abstract class GeneratedCommerceootbCoreManager extends Extension
 	{
 		final Map<String, Map<String, AttributeMode>> ttmp = new HashMap();
 		Map<String, AttributeMode> tmp = new HashMap<String, AttributeMode>();
+		tmp.put("addressId", AttributeMode.INITIAL);
+		ttmp.put("de.hybris.platform.jalo.user.Address", Collections.unmodifiableMap(tmp));
+		tmp = new HashMap<String, AttributeMode>();
 		tmp.put("deliveryInstruction", AttributeMode.INITIAL);
 		ttmp.put("de.hybris.platform.jalo.order.AbstractOrder", Collections.unmodifiableMap(tmp));
 		tmp = new HashMap<String, AttributeMode>();
@@ -147,6 +151,42 @@ public abstract class GeneratedCommerceootbCoreManager extends Extension
 	public void setAdditionalResources(final Product item, final CustomLink value)
 	{
 		setAdditionalResources( getSession().getSessionContext(), item, value );
+	}
+	
+	/**
+	 * <i>Generated method</i> - Getter of the <code>Address.addressId</code> attribute.
+	 * @return the addressId
+	 */
+	public String getAddressId(final SessionContext ctx, final Address item)
+	{
+		return (String)item.getProperty( ctx, CommerceootbCoreConstants.Attributes.Address.ADDRESSID);
+	}
+	
+	/**
+	 * <i>Generated method</i> - Getter of the <code>Address.addressId</code> attribute.
+	 * @return the addressId
+	 */
+	public String getAddressId(final Address item)
+	{
+		return getAddressId( getSession().getSessionContext(), item );
+	}
+	
+	/**
+	 * <i>Generated method</i> - Setter of the <code>Address.addressId</code> attribute. 
+	 * @param value the addressId
+	 */
+	public void setAddressId(final SessionContext ctx, final Address item, final String value)
+	{
+		item.setProperty(ctx, CommerceootbCoreConstants.Attributes.Address.ADDRESSID,value);
+	}
+	
+	/**
+	 * <i>Generated method</i> - Setter of the <code>Address.addressId</code> attribute. 
+	 * @param value the addressId
+	 */
+	public void setAddressId(final Address item, final String value)
+	{
+		setAddressId( getSession().getSessionContext(), item, value );
 	}
 	
 	/**

@@ -67,8 +67,14 @@
 	</action>
 	
 	<action id="takePayment" bean="takePaymentAction">
-		<transition name="OK" to="splitOrder"/>
+		<transition name="OK" to="sendOrderToErp"/>
 		<transition name="NOK" to="sendPaymentFailedNotification"/>
+	</action>
+
+	<action id="sendOrderToErp" bean="sendOrderToErpAction">
+		<transition name="OK" to="splitOrder"/>
+		<transition name="NOK" to="failed"/>
+		<transition name="SEND_ERROR_EMAIL" to="failed"/>
 	</action>
 
 	<action id="cancelOrder" bean="cancelWholeOrderAuthorizationAction">

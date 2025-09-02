@@ -162,7 +162,14 @@
         </typegroup>
 
         <typegroup name="CustomModel">
-
+            <itemtype code="Address" autocreate="false">
+                <attributes>
+                    <attribute qualifier="addressId" type="java.lang.String">
+                        <modifiers/>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
 
             <itemtype code="DeliveryInstruction" generate="true" autocreate="true">
                 <deployment table="DeliveryInstruction" typecode="29019"/>

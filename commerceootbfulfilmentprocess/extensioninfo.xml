@@ -8,7 +8,11 @@
                 		
         
         <requires-extension name="acceleratorservices"/>
-                		
+        <requires-extension name="commerceootbfacades"/>
+        <requires-extension name="outboundservices"/>
+        <requires-extension name="integrationservices"/>
+
+        <requires-extension name="consignmenttrackingservices"/>
         
         <requires-extension name="ticketsystem"/>
                 		

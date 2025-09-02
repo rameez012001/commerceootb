@@ -94,5 +94,9 @@
 		<property name="eventService" ref="eventService"/>
 	</bean>
 
-
+	<bean id="sendOrderToErpAction" class="com.commerceootb.fulfilmentprocess.actions.order.SendOrderToErpAction"  parent="abstractAction">
+		<property name="outboundServiceFacade" ref="outboundServiceFacade"/>
+		<property name="integrationObjectService" ref="integrationObjectService"/>
+		<property name="destinationSearchService" ref="destinationSearchService"/>
+	</bean>
 </beans>

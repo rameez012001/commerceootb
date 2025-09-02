@@ -92,6 +92,8 @@ public interface ControllerConstants
 
 			interface Custom{
 				String customKycPage = "pages/custom/kycPage";
+				String customFloaPage = "pages/custom/floaPaymentStep";
+				String customKlarnaPage = "pages/custom/klarnaPayment";
 			}
 
 			interface Checkout 

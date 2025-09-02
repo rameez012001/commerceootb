@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at May 14, 2025, 4:53:38 PM                    ---
+ * --- Generated at 22-Aug-2025, 11:43:51 am                    ---
  * ----------------------------------------------------------------
  */
 package com.commerceootb.core.constants;
@@ -40,6 +40,10 @@ public class GeneratedCommerceootbCoreConstants
 		public static class AbstractOrder
 		{
 			public static final String DELIVERYINSTRUCTION = "deliveryInstruction".intern();
+		}
+		public static class Address
+		{
+			public static final String ADDRESSID = "addressId".intern();
 		}
 		public static class Customer
 		{

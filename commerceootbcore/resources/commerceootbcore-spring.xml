@@ -662,6 +662,15 @@
 		<property name="kycDao" ref="kycDao"/>
 	</bean>
 
+	<bean id="templateRest" class="com.commerceootb.core.custom.service.TemplateRest"/>
+
+	<bean id="floaPaymentService" class="com.commerceootb.core.custom.serviceImpl.FloaPaymentServiceImpl">
+		<property name="templateRest" ref="templateRest"/>
+	</bean>
+
+	<bean id="klarnaService" class="com.commerceootb.core.custom.serviceImpl.KlarnaServiceImpl">
+		<property name="templateRest" ref="templateRest"/>
+	</bean>
 
 
 </beans>

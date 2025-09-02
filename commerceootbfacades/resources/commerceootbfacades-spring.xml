@@ -325,7 +325,7 @@
 
     <bean id="deliveryInstructionPopulator" class="com.commerceootb.facades.populators.DeliveryInstructionPopulator"/>
     <bean id="deliveryInstructionConverter" parent="abstractPopulatingConverter">
-        <property name="targetClass" value="com.commerceootb.core.model.DeliveryPeriodModel"/>
+        <property name="targetClass" value="com.commerceootb.core.model.DeliveryInstructionModel"/>
         <property name="populators">
             <list>
                 <ref bean="deliveryInstructionPopulator"/>
@@ -352,4 +352,28 @@
             </map>
         </property>
     </bean>
+
+    <bean id="floaPaymentFacade" class="com.commerceootb.facades.facadeImpl.FloaPaymentFacadeImpl">
+        <property name="floaPaymentService" ref="floaPaymentService"/>
+    </bean>
+
+    <bean id="klarnaPaymentFacade" class="com.commerceootb.facades.facadeImpl.KlarnaPaymentFacadeImpl">
+        <property name="klarnaService" ref="klarnaService"/>
+        <property name="cartService" ref="cartService"/>
+    </bean>
+
+<!--    <bean id = "customAddressPopulator" class="com.commerceootb.facades.populators.CustomAddressPopulator"/>-->
+<!--    <bean id = "customAddressReversePopulator" class="com.commerceootb.facades.populators.CustomAddressReversePopulator" parent="addressReversePopulator"/>-->
+
+<!--    <bean parent="modifyPopulatorList">-->
+<!--        <property name="list" ref="addressReverseConverter"/>-->
+<!--        <property name="add" ref="customAddressReversePopulator"/>-->
+<!--    </bean>-->
+
+<!--    <bean id = "modifiedCustomerReversePopulator" class="com.commerceootb.facades.populators.ModifiedCustomerReversePopulator"/>-->
+
+<!--    <bean parent="modifyPopulatorList">-->
+<!--        <property name="list" ref="customerReverseConverter"/>-->
+<!--        <property name="add" ref="modifiedCustomerReversePopulator"/>-->
+<!--    </bean>-->
 </beans>

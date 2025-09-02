@@ -4,79 +4,189 @@
 -->
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="beans.xsd">
 
-	<bean class="de.hybris.platform.commercefacades.product.data.ProductData">
-		<property name="genders" type="java.util.List&lt;com.commerceootb.facades.product.data.GenderData>"/>
-		<property name="bindingFormat" type="java.lang.String"/>
-		<property name="marketingImprintName" type="java.lang.String"/>
-		<property name="availableDate" type="java.util.Date"/>
-		<property name="additionalResources" type="com.commerceootb.facades.product.data.CustomLinkData"/>
-		<property name="nonEComCatSection" type="java.util.Collection&lt;de.hybris.platform.commercefacades.product.data.CategoryData&gt;"/>
-		<property name="bundledProduct" type="java.util.List&lt;com.commerceootb.facades.product.data.BundledProductData&gt;"/>
-	</bean>
+    <bean class="de.hybris.platform.commercefacades.product.data.ProductData">
+        <property name="genders" type="java.util.List&lt;com.commerceootb.facades.product.data.GenderData>"/>
+        <property name="bindingFormat" type="java.lang.String"/>
+        <property name="marketingImprintName" type="java.lang.String"/>
+        <property name="availableDate" type="java.util.Date"/>
+        <property name="additionalResources" type="com.commerceootb.facades.product.data.CustomLinkData"/>
+        <property name="nonEComCatSection"
+                  type="java.util.Collection&lt;de.hybris.platform.commercefacades.product.data.CategoryData&gt;"/>
+        <property name="bundledProduct"
+                  type="java.util.List&lt;com.commerceootb.facades.product.data.BundledProductData&gt;"/>
+    </bean>
 
-	<bean class="com.commerceootb.facades.product.data.BundledProductData">
-		<property name="productRefImg" type="java.lang.String"/>
-		<property name="productRefDesc" type="java.lang.String"/>
-		<property name="productPrice" type="java.lang.String"/>
-		<property name="productUrl" type="java.lang.String"/>
-		<property name="productRating" type="java.lang.String"/>
-	</bean>
+    <bean class="com.commerceootb.facades.product.data.BundledProductData">
+        <property name="productRefImg" type="java.lang.String"/>
+        <property name="productRefDesc" type="java.lang.String"/>
+        <property name="productPrice" type="java.lang.String"/>
+        <property name="productUrl" type="java.lang.String"/>
+        <property name="productRating" type="java.lang.String"/>
+    </bean>
 
-	<bean class="com.commerceootb.facades.product.data.GenderData">
-		<property name="code" type="String"/>
-		<property name="name" type="String"/>
-	</bean>
+    <bean class="com.commerceootb.facades.product.data.GenderData">
+        <property name="code" type="String"/>
+        <property name="name" type="String"/>
+    </bean>
 
-	<bean class="com.commerceootb.facades.product.data.KycData">
-		<property name="nationality" type="String"/>
-		<property name="dob" type="java.util.Date"/>
-		<property name="postalCode" type="String"/>
-		<property name="issuedDate" type="java.util.Date"/>
-		<property name="expiryDate" type="java.util.Date"/>
-		<property name="documentType" type="String"/>
-		<property name="documentId" type="String"/>
-	</bean>
+    <bean class="com.commerceootb.facades.product.data.KycData">
+        <property name="nationality" type="String"/>
+        <property name="dob" type="java.util.Date"/>
+        <property name="postalCode" type="String"/>
+        <property name="issuedDate" type="java.util.Date"/>
+        <property name="expiryDate" type="java.util.Date"/>
+        <property name="documentType" type="String"/>
+        <property name="documentId" type="String"/>
+    </bean>
 
-	<bean class="de.hybris.platform.commerceservices.search.facetdata.OrderSearchPageData&lt;STATE, RESULT>" extends="de.hybris.platform.commerceservices.search.facetdata.FacetSearchPageData&lt;STATE, RESULT>">
-		<description>POJO containing the result page for product search.</description>
-		<property name="freeTextSearch" type="String"/>
-		<property name="spellingSuggestion" type="de.hybris.platform.commerceservices.search.facetdata.SpellingSuggestionData&lt;STATE>"/>
-	</bean>
-	<bean class="com.commerceootb.facades.product.data.CustomLinkData">
-		<property name="title" type="java.lang.String"/>
-		<property name="url" type="java.lang.String"/>
-	</bean>
-<!--	<bean class="de.hybris.platform.cmsfacades.data.ProductData">-->
-<!--		-->
-<!--	</bean>-->
+    <bean class="de.hybris.platform.commerceservices.search.facetdata.OrderSearchPageData&lt;STATE, RESULT>"
+          extends="de.hybris.platform.commerceservices.search.facetdata.FacetSearchPageData&lt;STATE, RESULT>">
+        <description>POJO containing the result page for product search.</description>
+        <property name="freeTextSearch" type="String"/>
+        <property name="spellingSuggestion"
+                  type="de.hybris.platform.commerceservices.search.facetdata.SpellingSuggestionData&lt;STATE>"/>
+    </bean>
+    <bean class="com.commerceootb.facades.product.data.CustomLinkData">
+        <property name="title" type="java.lang.String"/>
+        <property name="url" type="java.lang.String"/>
+    </bean>
+    <!--	<bean class="de.hybris.platform.cmsfacades.data.ProductData">-->
+    <!--		-->
+    <!--	</bean>-->
 
-	<bean class="com.commerceootb.facades.product.data.BpclData">
-		<property name="id" type="java.lang.Long"/>
-		<property name="customerName" type="java.lang.String"/>
-		<property name="customerMobileNumber" type="java.lang.Long"/>
-		<property name="customerNumber" type="java.lang.Long"/>
-		<property name="distributorCode" type="java.lang.Integer"/>
-		<property name="operatorId" type="java.lang.String"/>
-		<property name="operatorName" type="java.lang.String"/>
-		<property name="operatorMobileNumber" type="java.lang.Long"/>
-		<property name="lpgId" type="java.lang.Long"/>
-		<property name="otpRefId" type="java.lang.Integer"/>
-		<property name="latitude" type="java.lang.String"/>
-		<property name="longitude" type="java.lang.String"/>
-		<property name="safetyImageUrl" type="java.lang.String"/>
-		<property name="questionRes" type="java.lang.String"/>
-		<property name="surakshaDate" type="java.lang.String"/>
-		<property name="sentToLpgNxt" type="java.lang.Boolean"/>
-		<property name="safetyInspectionDate" type="java.util.Date"/>
-	</bean>
+    <bean class="com.commerceootb.facades.product.data.BpclData">
+        <property name="id" type="java.lang.Long"/>
+        <property name="customerName" type="java.lang.String"/>
+        <property name="customerMobileNumber" type="java.lang.Long"/>
+        <property name="customerNumber" type="java.lang.Long"/>
+        <property name="distributorCode" type="java.lang.Integer"/>
+        <property name="operatorId" type="java.lang.String"/>
+        <property name="operatorName" type="java.lang.String"/>
+        <property name="operatorMobileNumber" type="java.lang.Long"/>
+        <property name="lpgId" type="java.lang.Long"/>
+        <property name="otpRefId" type="java.lang.Integer"/>
+        <property name="latitude" type="java.lang.String"/>
+        <property name="longitude" type="java.lang.String"/>
+        <property name="safetyImageUrl" type="java.lang.String"/>
+        <property name="questionRes" type="java.lang.String"/>
+        <property name="surakshaDate" type="java.lang.String"/>
+        <property name="sentToLpgNxt" type="java.lang.Boolean"/>
+        <property name="safetyInspectionDate" type="java.util.Date"/>
+    </bean>
 
-	<bean class="de.hybris.platform.commercefacades.order.data.AbstractOrderData">
-		<property name="deliveryPeriod" type="com.commerceootb.facades.product.data.DeliveryInstructionData"/>
-	</bean>
+    <bean class="de.hybris.platform.commercefacades.order.data.AbstractOrderData">
+        <property name="deliveryPeriod" type="com.commerceootb.facades.product.data.DeliveryInstructionData"/>
+    </bean>
 
-	<bean class="com.commerceootb.facades.product.data.DeliveryInstructionData">
-		<property name="instruction" type="String" />
-		<property name="deliveryPeriod" type="String" />
-	</bean>
+    <bean class="com.commerceootb.facades.product.data.DeliveryInstructionData">
+        <property name="instruction" type="String"/>
+        <property name="deliveryPeriod" type="String"/>
+    </bean>
+
+    <!-- Floa Payment -->
+    <bean class="com.commerceootb.facades.floa.data.InstallmentPlanResponse">
+        <property name="installmentPlanCount" type="String"/>
+        <property name="simulatedInstallmentPlans"
+                  type="java.util.List&lt;com.commerceootb.facades.floa.data.SimulatedInstallmentPlan&gt;"/>
+        <property name="links" type="java.util.List&lt;com.commerceootb.facades.floa.data.Link&gt;"/>
+    </bean>
+
+    <bean class="com.commerceootb.facades.floa.data.SimulatedInstallmentPlan">
+        <property name="productName" type="String"/>
+        <property name="productCode" type="String"/>
+        <property name="countryCode" type="String"/>
+        <property name="installmentCount" type="String"/>
+        <property name="customerFees" type="String"/>
+        <property name="customerTotalAmount" type="String"/>
+        <property name="merchantFinancedAmount" type="String"/>
+        <property name="merchantFees" type="String"/>
+        <property name="merchantServiceFees" type="String"/>
+        <property name="merchantTotalAmount" type="String"/>
+        <property name="simulatedInstallments"
+                  type="java.util.List&lt;com.commerceootb.facades.floa.data.SimulatedInstallment&gt;"/>
+    </bean>
+
+    <bean class="com.commerceootb.facades.floa.data.SimulatedInstallment">
+        <property name="rank" type="String"/>
+        <property name="date" type="String"/>
+        <property name="amount" type="String"/>
+    </bean>
+
+    <bean class="com.commerceootb.facades.floa.data.Link">
+        <property name="href" type="String"/>
+        <property name="rel" type="String"/>
+        <property name="method" type="String"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercefacades.user.data.AddressData">
+        <property name="addressId" type="String"/>
+    </bean>
+
+    <!--    Klarna Payment -->
+    <!--    Klarna payment session request  -->
+    <bean class="com.commerceootb.facades.klarna.data.KlarnaSessionData">
+        <property name="purchaseCountry" type="String"/>
+        <property name="purchaseCurrency" type="String"/>
+        <property name="locale" type="String"/>
+        <property name="orderAmount" type="java.lang.Integer"/>
+        <property name="orderTaxAmount" type="java.lang.Integer"/>
+        <property name="orderLines"
+                  type="java.util.List&lt;com.commerceootb.facades.klarna.data.KlarnaOrderLineData&gt;"/>
+    </bean>
+
+    <bean class="com.commerceootb.facades.klarna.data.KlarnaOrderLineData">
+        <property name="name" type="String"/>
+        <property name="quantity" type="java.lang.Integer"/>
+        <property name="unitPrice" type="java.lang.Integer"/>
+        <property name="totalAmount" type="java.lang.Integer"/>
+    </bean>
+    <!--    Klarna payment session response    -->
+    <bean class="com.commerceootb.facades.klarna.data.KlarnaSessionResponseData">
+        <property name="clientToken" type="String"/>
+        <property name="sessionId" type="String"/>
+        <property name="paymentMethodCategories"
+                  type="java.util.List&lt;com.commerceootb.facades.klarna.data.PaymentMethodCategoryData&gt;"/>
+    </bean>
+
+    <bean class="com.commerceootb.facades.klarna.data.PaymentMethodCategoryData">
+        <property name="identifier" type="String"/>
+        <property name="name" type="String"/>
+        <property name="assetUrls" type="com.commerceootb.facades.klarna.data.AssetUrlsData"/>
+    </bean>
+
+    <bean class="com.commerceootb.facades.klarna.data.AssetUrlsData">
+        <property name="descriptive" type="String"/>
+        <property name="standard" type="String"/>
+    </bean>
+
+    <!--    Klarna HPP session request data     -->
+    <bean class="com.commerceootb.facades.klarna.data.KlarnaHppSessionReqData">
+        <property name="paymentSessionUrl" type="String"/>
+        <property name="merchantUrls" type="com.commerceootb.facades.klarna.data.MerchantUrlsData"/>
+    </bean>
+
+    <bean class="com.commerceootb.facades.klarna.data.MerchantUrlsData">
+        <property name="success" type="String"/>
+        <property name="cancel" type="String"/>
+        <property name="back" type="String"/>
+        <property name="failure" type="String"/>
+        <property name="error" type="String"/>
+    </bean>
+    <!--    Klarna HPP Session Resonse Data-->
+    <bean class="com.commerceootb.facades.klarna.data.KlarnaHppSessionResData">
+        <property name="sessionId" type="java.lang.String"/>
+        <property name="redirectUrl" type="java.lang.String"/>
+        <property name="sessionUrl" type="java.lang.String"/>
+        <property name="qrCodeUrl" type="java.lang.String"/>
+        <property name="distributionUrl" type="java.lang.String"/>
+        <property name="expiresAt" type="java.lang.String"/>
+        <property name="distributionModule" type="com.commerceootb.facades.klarna.data.DistributionModuleData"/>
+    </bean>
+
+    <bean class="com.commerceootb.facades.klarna.data.DistributionModuleData">
+        <property name="token" type="java.lang.String"/>
+        <property name="standaloneUrl" type="java.lang.String"/>
+        <property name="generationUrl" type="java.lang.String"/>
+    </bean>
 
 </beans>
