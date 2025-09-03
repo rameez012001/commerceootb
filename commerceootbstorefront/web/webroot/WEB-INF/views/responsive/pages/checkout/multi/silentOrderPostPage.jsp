@@ -26,7 +26,7 @@
                 <c:if test="${not empty paymentFormUrl}">
                     <div class="checkout-paymentmethod">
                         <div class="checkout-indent">
-                            <custom:klarnaPayment klarnaPayment= "hello"/>
+                            <custom:klarnaPayment klarnaPayment= "${pageContext.request.contextPath}/checkout/multi/payment-method/klarna-payment" redirectKlarna="${redirectKlarna}"/>
                             <div class="headline"><spring:theme code="checkout.multi.paymentMethod"/></div>
 
 							    <ycommerce:testId code="paymentDetailsForm">

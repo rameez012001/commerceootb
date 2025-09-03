@@ -142,16 +142,16 @@
     </bean>
     <!--    Klarna payment session response    -->
     <bean class="com.commerceootb.facades.klarna.data.KlarnaSessionResponseData">
-        <property name="clientToken" type="String"/>
-        <property name="sessionId" type="String"/>
-        <property name="paymentMethodCategories"
+        <property name="client_token" type="String"/>
+        <property name="session_id" type="String"/>
+        <property name="payment_method_categories"
                   type="java.util.List&lt;com.commerceootb.facades.klarna.data.PaymentMethodCategoryData&gt;"/>
     </bean>
 
     <bean class="com.commerceootb.facades.klarna.data.PaymentMethodCategoryData">
         <property name="identifier" type="String"/>
         <property name="name" type="String"/>
-        <property name="assetUrls" type="com.commerceootb.facades.klarna.data.AssetUrlsData"/>
+        <property name="asset_urls" type="com.commerceootb.facades.klarna.data.AssetUrlsData"/>
     </bean>
 
     <bean class="com.commerceootb.facades.klarna.data.AssetUrlsData">
@@ -161,8 +161,8 @@
 
     <!--    Klarna HPP session request data     -->
     <bean class="com.commerceootb.facades.klarna.data.KlarnaHppSessionReqData">
-        <property name="paymentSessionUrl" type="String"/>
-        <property name="merchantUrls" type="com.commerceootb.facades.klarna.data.MerchantUrlsData"/>
+        <property name="payment_session_url" type="String"/>
+        <property name="merchant_urls" type="com.commerceootb.facades.klarna.data.MerchantUrlsData"/>
     </bean>
 
     <bean class="com.commerceootb.facades.klarna.data.MerchantUrlsData">
@@ -171,22 +171,56 @@
         <property name="back" type="String"/>
         <property name="failure" type="String"/>
         <property name="error" type="String"/>
+        <property name="confirmation" type="String"/>
+        <property name="notification" type="String"/>
     </bean>
     <!--    Klarna HPP Session Resonse Data-->
     <bean class="com.commerceootb.facades.klarna.data.KlarnaHppSessionResData">
-        <property name="sessionId" type="java.lang.String"/>
-        <property name="redirectUrl" type="java.lang.String"/>
-        <property name="sessionUrl" type="java.lang.String"/>
-        <property name="qrCodeUrl" type="java.lang.String"/>
-        <property name="distributionUrl" type="java.lang.String"/>
-        <property name="expiresAt" type="java.lang.String"/>
-        <property name="distributionModule" type="com.commerceootb.facades.klarna.data.DistributionModuleData"/>
+        <property name="session_id" type="java.lang.String"/>
+        <property name="redirect_url" type="java.lang.String"/>
+        <property name="session_url" type="java.lang.String"/>
+        <property name="qr_code_url" type="java.lang.String"/>
+        <property name="distribution_url" type="java.lang.String"/>
+        <property name="expires_at" type="java.lang.String"/>
+        <property name="distribution_module" type="com.commerceootb.facades.klarna.data.DistributionModuleData"/>
     </bean>
 
     <bean class="com.commerceootb.facades.klarna.data.DistributionModuleData">
         <property name="token" type="java.lang.String"/>
-        <property name="standaloneUrl" type="java.lang.String"/>
-        <property name="generationUrl" type="java.lang.String"/>
+        <property name="standalone_url" type="java.lang.String"/>
+        <property name="generation_url" type="java.lang.String"/>
+    </bean>
+
+    <!--  Klarna Order Request  -->
+    <bean class="com.commerceootb.facades.klarna.data.KlarnaOrderRequest" extends="com.commerceootb.facades.klarna.data.KlarnaSessionData">
+        <property name="billing_address" type="com.commerceootb.facades.klarna.data.KlarnaBillingAddress"/>
+        <property name="merchant_urls" type="com.commerceootb.facades.klarna.data.MerchantUrlsData"/>
+        <property name="merchant_reference1" type="java.lang.String"/>
+    </bean>
+
+    <bean class="com.commerceootb.facades.klarna.data.KlarnaBillingAddress">
+        <property name="given_name" type="String"/>
+        <property name="family_name" type="String"/>
+        <property name="email" type="String"/>
+        <property name="title" type="String"/>
+        <property name="street_address" type="String"/>
+        <property name="street_address2" type="String"/>
+        <property name="postal_code" type="String"/>
+        <property name="city" type="String"/>
+        <property name="region" type="String"/>
+        <property name="phone" type="String"/>
+        <property name="country" type="String"/>
+    </bean>
+    <!--  Klarna Order Response  -->
+    <bean class="com.commerceootb.facades.klarna.data.AuthorizedPaymentMethod">
+        <property name="type" type="String"/>
+    </bean>
+
+    <bean class="com.commerceootb.facades.klarna.data.KlarnaOrderResponse">
+        <property name="authorized_payment_method" type="AuthorizedPaymentMethod"/>
+        <property name="fraud_status" type="String"/>
+        <property name="order_id" type="String"/>
+        <property name="redirect_url" type="String"/>
     </bean>
 
 </beans>

@@ -5,6 +5,7 @@ package com.commerceootb.storefront.controllers.pages.checkout.steps;
 
 
 import com.commerceootb.facades.facadeService.KlarnaPaymentFacade;
+import com.commerceootb.facades.klarna.data.KlarnaHppSessionResData;
 import de.hybris.platform.acceleratorservices.enums.CheckoutPciOptionEnum;
 import de.hybris.platform.acceleratorservices.payment.constants.PaymentConstants;
 import de.hybris.platform.acceleratorservices.payment.data.PaymentData;
@@ -416,10 +417,22 @@ public class PaymentMethodCheckoutStepController extends AbstractCheckoutStepCon
 	}
 
 	@GetMapping("/klarna-payment")
-    public void createKPSession(){
-		Map<String, Object> kpSession = getKlarnaPaymentFacade().createKpSession();
-		LOGGER.info(kpSession);
+	@RequireHardLogIn
+    public String createKPSession(final Model model){
+		KlarnaHppSessionResData kpHppRes = getKlarnaPaymentFacade().createKpSession();
+		LOGGER.info("Redirecting to Klarna: " + kpHppRes.getRedirect_url());
+		return "redirect:" + kpHppRes.getRedirect_url();
     }
+
+	@PostMapping("/klarna-success")
+	@RequireHardLogIn
+	public String successKlarna(
+			@RequestParam("sid") final String sessionId,
+			@RequestParam("authorization_token") final String authorizationToken,
+			final Model model){
+		getKlarnaPaymentFacade().createOrder(sessionId,authorizationToken);
+		return null;
+	}
 
 	public KlarnaPaymentFacade getKlarnaPaymentFacade() {
 		return klarnaPaymentFacade;

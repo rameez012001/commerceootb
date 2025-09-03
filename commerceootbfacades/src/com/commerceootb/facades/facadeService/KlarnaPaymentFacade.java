@@ -1,7 +1,10 @@
 package com.commerceootb.facades.facadeService;
 
+import com.commerceootb.facades.klarna.data.KlarnaHppSessionResData;
+
 import java.util.Map;
 
 public interface KlarnaPaymentFacade {
-    Map<String,Object> createKpSession();
+    KlarnaHppSessionResData createKpSession();
+    void createOrder(String sId, String token);
 }

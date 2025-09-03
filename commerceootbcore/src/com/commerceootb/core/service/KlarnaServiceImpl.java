@@ -1,7 +1,6 @@
 package com.commerceootb.core.service;
 
 import com.commerceootb.core.custom.service.TemplateRest;
-import com.commerceootb.facades.klarna.data.KlarnaHppSessionReqData;
 import com.commerceootb.facades.klarna.data.KlarnaHppSessionResData;
 import com.commerceootb.facades.klarna.data.KlarnaSessionResponseData;
 import org.springframework.http.*;
@@ -13,14 +12,10 @@ public class KlarnaServiceImpl implements KlarnaService {
     private final String HPP_SESSION = "https://api-na.playground.klarna.com/hpp/v1/sessions";
 
     private TemplateRest templateRest;
-    public KlarnaSessionResponseData createKpSession(Map<String,Object> payload){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
+    @Override
+    public KlarnaSessionResponseData createKPSession(Map<String,Object> payload){
+        HttpHeaders headers = getHeader();
         HttpEntity<Object> entity = new HttpEntity<>(payload,headers);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
         ResponseEntity<KlarnaSessionResponseData> response = null;
         try {
             response = getTemplateRest().createRestTemplate().exchange(
@@ -36,14 +31,10 @@ public class KlarnaServiceImpl implements KlarnaService {
 
     }
 
-    public void createHppSession(KlarnaHppSessionReqData payload){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
+    @Override
+    public KlarnaHppSessionResData createHppSession(Map<String,Object> payload){
+        HttpHeaders headers = getHeader();
         HttpEntity<Object> entity = new HttpEntity<>(payload,headers);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
         ResponseEntity<KlarnaHppSessionResData> response = null;
         try {
             response = getTemplateRest().createRestTemplate().exchange(
@@ -55,7 +46,16 @@ public class KlarnaServiceImpl implements KlarnaService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        response.getBody();
+        return response.getBody();
+    }
+
+    private HttpHeaders getHeader(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.setBasicAuth("4c564b4b-62c3-47b5-8c61-9f66e63b1d60","klarna_test_api_d25zKE02cjNTOE92YnJnV1d1cSNGKiEqVDUxKHBaeWEsNGM1NjRiNGItNjJjMy00N2I1LThjNjEtOWY2NmU2M2IxZDYwLDEsZk1zZ1BWOFJZcWFHNC90MUNkS3hjd0pPNmJxUWJUVitHY0hvNUxFeGM1WT0");
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return headers;
     }
 
     public TemplateRest getTemplateRest() {
