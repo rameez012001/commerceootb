@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at 21-Aug-2025, 7:51:33 pm                     ---
+ * --- Generated at 14-Sep-2025, 12:19:29 pm                    ---
  * ----------------------------------------------------------------
  */
 package com.commerceootbpromotionengine.constants;

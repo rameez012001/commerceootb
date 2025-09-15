@@ -22,9 +22,6 @@
             <div class="account-section-form">
                  <form:form action="kyc/update-profile" method="post" modelAttribute="updateProfileForm">
 
-                    <formElement:formSelectBoxDefaultEnabled idKey="profile.title" labelKey="profile.title" path="titleCode" mandatory="true" skipBlank="false" skipBlankMessageKey="form.select.none" items="${titleData}" selectCSSClass="form-control"/>
-                    <formElement:formInputBox idKey="profile.firstName" labelKey="profile.firstName" path="firstName" inputCSS="text" mandatory="true"/>
-                    <formElement:formInputBox idKey="profile.lastName" labelKey="profile.lastName" path="lastName" inputCSS="text" mandatory="true"/>
                     <h3>Kyc Details</h3>
                     <formElement:formInputBox idKey="profile.nationality" labelKey="Nationality" path="nationality" inputCSS="text" mandatory="true"/>
                     <form:label path="dob">Date Of Birth</form:label><br>

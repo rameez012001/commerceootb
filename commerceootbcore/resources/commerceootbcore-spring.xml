@@ -596,7 +596,7 @@
 		<property name="modelService" ref="modelService"/>
 	</bean>
 
-	<import resource="classpath:/commerceootbcore/processes/kycRegistrationProcess-spring.xml"/>
+<!--	<import resource="classpath:/commerceootbcore/processes/kycRegistrationProcess-spring.xml"/>-->
 
 	<bean id="kycProcessDefinitionResource"
 		  class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >

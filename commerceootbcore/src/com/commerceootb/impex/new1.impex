@@ -1,28 +1,12 @@
 $contentCatalog = electronicsContentCatalog
 $contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
 
-UPDATE  CMSNavigationNode;uid[unique=true]		 ;$contentCV[unique=true];name						   	;&nodeRef       ;children(uid,$contentCV)[mode=append];
-                         ;KycDetailNode	 ;				             ;Kyc Node Categories			;KycDetailNode	;NewCanonBrandNavNode,NewSonyBrandNavNode,NewKodakBrandNavNode,NewSamsungBrandNavNode,NewToshibaBrandNavNode,NewFujifilmBrandNavNode;
-INSERT_UPDATE CMSNavigationNode; uid[unique = true]   ; $contentCV[unique = true]; name                ; &nodeRef;  links(uid,$contentCV);
-## Brands -- cameras
-                               ; NewCanonBrandNavNode    ;                          ; Canon Brand Link    ; NewCanonBrandNavNode;CanonBrandCategoryLink;
-                               ; NewSonyBrandNavNode     ;                          ; Sony Brand Link     ; NewSonyBrandNavNode;SonyBrandCategoryLink;
-                               ; NewKodakBrandNavNode    ;                          ; Kodak Brand Link    ; NewKodakBrandNavNode;KodakBrandCategoryLink;
-                               ; NewSamsungBrandNavNode  ;                          ; Samsung Brand Link  ; NewSamsungBrandNavNode;SamsungBrandCategoryLink;
-                               ; NewToshibaBrandNavNode  ;                          ; Toshiba Brand Link  ; NewToshibaBrandNavNode;ToshibaBrandCategoryLink;
-                               ; NewFujifilmBrandNavNode ;                          ; Fujifilm Brand Link ; NewFujifilmBrandNavNode;FujifilmBrandCategoryLink;
-
-
-INSERT_UPDATE CMSNavigationEntry; uid[unique = true]           ; $contentCV[unique = true]; name                                 ; navigationNode(&nodeRef); item(CMSLinkComponent.uid, CMSLinkComponent.$contentCV);
-## Brands -- cameras
-                                ; NewCanonBrandNavNodeEntry    ;                          ; Canon Brand Navigation Node Entry    ; NewCanonBrandNavNode    ; CanonBrandCategoryLink                                 ;
-                                ; NewSonyBrandNavNodeEntry     ;                          ; Sony Brand Navigation Node Entry     ; NewSonyBrandNavNode     ; SonyBrandCategoryLink                                  ;
-                                ; NewKodakBrandNavNodeEntry    ;                          ; Kodak Brand Navigation Node Entry    ; NewKodakBrandNavNode    ; KodakBrandCategoryLink                                 ;
-                                ; NewSamsungBrandNavNodeEntry  ;                          ; Samsung Brand Navigation Node Entry  ; NewSamsungBrandNavNode  ; SamsungBrandCategoryLink                               ;
-                                ; NewToshibaBrandNavNodeEntry  ;                          ; Toshiba Brand Navigation Node Entry  ; NewToshibaBrandNavNode  ; ToshibaBrandCategoryLink                               ;
-                                ; NewFujifilmBrandNavNodeEntry ;                          ; Fujifilm Brand Navigation Node Entry ; NewFujifilmBrandNavNode ; FujifilmBrandCategoryLink                              ;
-
-
+INSERT_UPDATE CMSLinkComponent; $contentCV[unique = true]; uid[unique = true]; linkName[lang = en]; name     ; url                        ; &linkRef         ; &componentRef    ; target(code)[default = 'sameWindow']
+                              ;                          ; kycLinkComponent  ; KYC                ; KYC Link ; /my-account/update-profile ; kycLinkComponent ; kycLinkComponent ;
+INSERT_UPDATE CMSNavigationNode; uid[unique = true]; $contentCV[unique = true]; name     ; &nodeRef      ; parent(uid, $contentCV)
+                               ; KycDetailNode     ;                          ; Kyc Node ; KycDetailNode ; ElectronicsCategoryNavNode
+INSERT_UPDATE CMSNavigationEntry; uid[unique = true] ; $contentCV[unique = true]; name                  ; navigationNode(&nodeRef); item(CMSLinkComponent.uid, CMSLinkComponent.$contentCV)
+                                ; KycDetailNodeEntry ;                          ; KYC Detail Node Entry ; KycDetailNode           ; kycLinkComponent
 
 
 $contentCatalog = electronicsContentCatalog
@@ -53,23 +37,86 @@ INSERT_UPDATE ContentSlotForTemplate; $contentCV[unique = true]; uid[unique = tr
 INSERT_UPDATE ContentPage; $contentCV[unique = true]; uid[unique = true]; name             ; masterTemplate(uid, $contentCV); label      ; defaultPage[default = 'true']; approvalStatus(code)[default = 'approved']; homepage[default = 'false']
                          ;                          ; kycContentPage    ; Kyc Content Page ; KycPageTemplate                ; kycCMSPage ;                              ;                                           ;
 
+$contentCatalog = electronicsContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+$siteResource = jar:de.hybris.platform.electronicsstore.constants.ElectronicsstoreConstants&/commerceootbinitialdata/import/sampledata
+#success
+INSERT_UPDATE CMSLinkComponent; $contentCV[unique = true]; uid[unique = true]  ; name        ; url; &linkRef            ; &componentRef       ; target(code)[default = 'sameWindow']; linkName;
+                              ;                          ; SamsungS10PriceLink ; samsung s10 ; #  ; SamsungS10PriceLink ; SamsungS10PriceLink ;                                     ; 69000   ;
+
+INSERT_UPDATE Media; $contentCV[unique = true]; code[unique = true]; @media[translator = de.hybris.platform.impex.jalo.media.MediaDataTranslator]; mime[default = 'image/jpeg']; &imageRef      ; folder(qualifier)[default = 'images']
+                   ;                          ; samsungS10Logo     ; $siteResource/images/samsung.jpg                                            ;                             ; samsung.jpg    ;
+                   ;                          ; samsungS10Media    ; $siteResource/images/samsungS10.jpg                                         ;                             ; samsungS10.jpg ;
+
+INSERT_UPDATE OfferBannerComponent; $contentCV[unique = true]; uid[unique = true]       ; name                    ; title[lang = en]      ; description     ; productCode      ; productImage(code, $contentCV); &componentRef            ; isPrice(&linkRef)   ; wasPrice; productLogo(code, $contentCV)
+                                  ;                          ; samsungS10OfferComponent ; Samsung offer Component ; "Samsung Galaxy S10+" ; "ahead of time" ; Samsung_S10_Plus ; samsungS10Media               ; samsungS10OfferComponent ; SamsungS10PriceLink ; 79000   ; samsungS10Logo
+
+INSERT_UPDATE ContentSlotName; name[unique = true]; template(uid, $contentCV)[unique = true][default = 'KycPageTemplate']; validComponentTypes(code); compTypeGroup(code)
+                             ; SamsungS10SlotName ;                                                                      ; OfferBannerComponent     ;
+
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]    ; name              ; active; cmsComponents(&componentRef)
+                         ;                          ; samsungS10ContentSlot ; Samsung S10 Offer ; true  ; samsungS10OfferComponent
+
+INSERT_UPDATE ContentSlotForTemplate; $contentCV[unique = true]; uid[unique = true]      ; position[unique = true]; pageTemplate(uid, $contentCV)[unique = true][default = 'KycPageTemplate']; contentSlot(uid, $contentCV)[unique = true]; allowOverwrite
+                                    ;                          ; samsungS10Offer-kycPage ; SamsungS10SlotName     ;                                                                          ; samsungS10ContentSlot                      ; true
+
+
+$contentCatalog = electronicsContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+
+INSERT_UPDATE ContentSlotName; name[unique = true]    ; template(uid, $contentCV)[unique = true][default = 'KycPageTemplate']; validComponentTypes(code); compTypeGroup(code)
+                             ; SiteLogo               ;                                                                      ;                          ; logo
+                             ; HeaderLinks            ;                                                                      ;                          ; headerlinks
+                             ; SearchBox              ;                                                                      ;                          ; searchbox
+                             ; MiniCart               ;                                                                      ;                          ; minicart
+                             ; NavigationBar          ;                                                                      ;                          ; navigation
+                             ; Footer                 ;                                                                      ;                          ; footer
+                             ; TopHeaderSlot          ;                                                                      ;                          ; wide
+                             ; BottomHeaderSlot       ;                                                                      ;                          ; wide
+                             ; PlaceholderContentSlot ;                                                                      ;                          ;
+
+INSERT_UPDATE ContentSlotForTemplate; $contentCV[unique = true]; uid[unique = true]                  ; position[unique = true]; pageTemplate(uid, $contentCV)[unique = true][default = 'KycPageTemplate']; contentSlot(uid, $contentCV)[unique = true]; allowOverwrite
+                                    ;                          ; SiteLogo-KycPage               ; SiteLogo               ;                                                                               ; SiteLogoSlot                               ; true
+                                    ;                          ; HomepageLink-KycPage           ; HomepageNavLink        ;                                                                               ; HomepageNavLinkSlot                        ; true
+                                    ;                          ; MiniCart-KycPage               ; MiniCart               ;                                                                               ; MiniCartSlot                               ; true
+                                    ;                          ; NavigationBar-KycPage          ; NavigationBar          ;                                                                               ; NavigationBarSlot                          ; true
+                                    ;                          ; Footer-KycPage                 ; Footer                 ;                                                                               ; FooterSlot                                 ; true
+                                    ;                          ; HeaderLinks-KycPage            ; HeaderLinks            ;                                                                               ; HeaderLinksSlot                            ; true
+                                    ;                          ; SearchBox-KycPage              ; SearchBox              ;                                                                               ; SearchBoxSlot                              ; true
+                                    ;                          ; TopHeaderSlot-KycPage          ; TopHeaderSlot          ;                                                                               ; TopHeaderSlot                              ; true
+                                    ;                          ; BottomHeaderSlot-KycPage       ; BottomHeaderSlot       ;                                                                               ; BottomHeaderSlot                           ; true
+                                    ;                          ; PlaceholderContentSlot-KycPage ; PlaceholderContentSlot ;                                                                               ; PlaceholderContentSlot                     ; true
+
+$contentCatalog = electronicsContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+
+INSERT_UPDATE CMSUserRestriction; $contentCV[unique = true]; uid[unique = true]    ; name                    ; users(uid)      ; components(uid, catalogVersion(catalog(id), version)); &componentRef
+                                ;                          ; CustomUserRestriction ; Custom User Restriction ; john1@gmail.com ; samsungS10OfferComponent:$contentCatalog:Staged      ; CustomUserRestriction
+
+
+INSERT_UPDATE CMSUserGroupRestriction; $contentCV[unique = true]; uid[unique = true]    ; name                          ; userGroups(uid)               ; includeSubgroups; components(uid, catalogVersion(catalog(id), version))
+                                     ;                          ; OfferGroupRestriction ; Reviewed Customer Offer Group ; reviewedProductsCustomerGroup ; true            ; samsungS10OfferComponent:$contentCatalog:Staged
+
+
+
 # Email Template
 
-$contentCatalog=electronicsContentCatalog
-$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$contentCatalog = electronicsContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
 
-UPDATE GenericItem[processor=de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor];pk[unique=true]
+UPDATE GenericItem[processor = de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor]; pk[unique = true]
 
-$emailResource=$config-emailResourceValue
+$emailResource = $config-emailResourceValue
 
-$emailPackageName=$config-emailContextPackageName
+$emailPackageName = $config-emailContextPackageName
 
-INSERT_UPDATE RendererTemplate	;code[unique=true]			;contextClass								;templateScript[lang=en,translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator];rendererType(code)[default='velocity']
-                                  ;emailKycBody				;$emailPackageName.KycEmailContext			;$emailResource/email-kycSentBody.vm;
-                                  ;emailKycSubject			;$emailPackageName.KycEmailContext			;$emailResource/email-kycSentSubject.vm;
+INSERT_UPDATE RendererTemplate; code[unique = true]; contextClass                      ; templateScript[lang = en, translator = de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]; rendererType(code)[default = 'velocity']
+                              ; emailKycBody       ; $emailPackageName.KycEmailContext ; $emailResource/email-kycSentBody.vm                                                                             ;
+                              ; emailKycSubject    ; $emailPackageName.KycEmailContext ; $emailResource/email-kycSentSubject.vm                                                                          ;
 
-INSERT_UPDATE EmailPageTemplate	;$contentCV[unique=true];uid[unique=true]		;active	;frontendTemplateName	;subject(code)							;htmlTemplate(code)		;restrictedPageTypes(code)
-                                   ;						;KycEmailTemplate			;true	;KycEmail				;emailKycSubject						;emailKycBody			;EmailPage
+INSERT_UPDATE EmailPageTemplate; $contentCV[unique = true]; uid[unique = true]; active; frontendTemplateName; subject(code)   ; htmlTemplate(code); restrictedPageTypes(code)
+                               ;                          ; KycEmailTemplate  ; true  ; KycEmail            ; emailKycSubject ; emailKycBody      ; EmailPage
 
-INSERT_UPDATE EmailPage	;$contentCV[unique=true];uid[unique=true]	;masterTemplate(uid,$contentCV);approvalStatus(code)[default='approved']
-                           ;						;KycEmail			;KycEmailTemplate			   ;
+INSERT_UPDATE EmailPage; $contentCV[unique = true]; uid[unique = true]; masterTemplate(uid, $contentCV); approvalStatus(code)[default = 'approved']
+                       ;                          ; KycEmail          ; KycEmailTemplate               ;
+

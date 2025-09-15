@@ -2,23 +2,23 @@
 <!--
  Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
 -->
-<process xmlns="http://www.hybris.de/xsd/processdefinition" start="validateKyc" name="KycProcessReg"
+<process xmlns="http://www.hybris.de/xsd/processdefinition" start="success" name="KycProcessReg"
          processClass="com.commerceootb.core.model.KycProcessModel" onError="error">
 
     <!--Action Node    -->
-    <action id="validateKyc" bean="validateKyc">
-        <transition name="OK" to="approvalStatus"/>
-        <transition name="NOK" to="error"/>
-    </action>
+<!--    <action id="validateKyc" bean="validateKyc">-->
+<!--        <transition name="OK" to="approvalStatus"/>-->
+<!--        <transition name="NOK" to="error"/>-->
+<!--    </action>-->
 
-    <wait id="approvalStatus" then="kycEmail" prependProcessCode="false">
-        <event>${process.kycDetails.documentId}_KycApproval</event>
-    </wait>
+<!--    <wait id="approvalStatus" then="kycEmail" prependProcessCode="false">-->
+<!--        <event>${process.kycDetails.documentId}_KycApproval</event>-->
+<!--    </wait>-->
 
-    <action id="kycEmail" bean="kycEmail">
-        <transition name="OK" to="success"/>
-        <transition name="NOK" to="error"/>
-    </action>
+<!--    <action id="kycEmail" bean="kycEmail">-->
+<!--        <transition name="OK" to="success"/>-->
+<!--        <transition name="NOK" to="error"/>-->
+<!--    </action>-->
 
     <!--End Node    -->
     <end id="error" state="ERROR">Something went wrong.</end>

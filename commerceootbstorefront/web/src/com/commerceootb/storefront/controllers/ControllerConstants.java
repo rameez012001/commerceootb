@@ -86,8 +86,6 @@ public interface ControllerConstants
 				String AccountEditAddressPage = "pages/account/accountEditAddressPage"; 
 				String AccountPaymentInfoPage = "pages/account/accountPaymentInfoPage"; 
 				String AccountRegisterPage = "pages/account/accountRegisterPage";
-				String KycDetailPage = "pages/account/kycDetailPage";
-				String KycPage = "pages/account/kycList";
 			}
 
 			interface Custom{

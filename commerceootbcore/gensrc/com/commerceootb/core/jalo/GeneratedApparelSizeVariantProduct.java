@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at 22-Aug-2025, 11:43:51 am                    ---
+ * --- Generated at 11-Sep-2025, 12:25:18 pm                    ---
  * ----------------------------------------------------------------
  */
 package com.commerceootb.core.jalo;
