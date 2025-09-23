@@ -223,4 +223,48 @@
         <property name="redirect_url" type="String"/>
     </bean>
 
+    <!-- Klarna full order details -->
+    <bean class="com.commerceootb.facades.klarna.data.KlarnaOrderDetails">
+        <property name="order_id" type="java.lang.String"/>
+        <property name="status" type="java.lang.String"/>
+        <property name="fraud_status" type="java.lang.String"/>
+        <property name="order_amount" type="java.lang.Integer"/>
+        <property name="original_order_amount" type="java.lang.Integer"/>
+        <property name="captured_amount" type="java.lang.Integer"/>
+        <property name="refunded_amount" type="java.lang.Integer"/>
+        <property name="remaining_authorized_amount" type="java.lang.Integer"/>
+        <property name="purchase_currency" type="java.lang.String"/>
+        <property name="locale" type="java.lang.String"/>
+        <property name="order_lines"
+                  type="java.util.List&lt;com.commerceootb.facades.klarna.data.KlarnaOrderLineExtended&gt;"/>
+        <property name="merchant_reference1" type="java.lang.String"/>
+        <property name="klarna_reference" type="java.lang.String"/>
+        <property name="billing_address" type="com.commerceootb.facades.klarna.data.KlarnaBillingAddress"/>
+        <property name="shipping_address" type="com.commerceootb.facades.klarna.data.KlarnaBillingAddress"/>
+        <property name="created_at" type="java.lang.String"/>
+        <property name="purchase_country" type="java.lang.String"/>
+        <property name="expires_at" type="java.lang.String"/>
+        <property name="captures" type="java.util.List&lt;java.lang.Object&gt;"/>
+        <property name="refunds" type="java.util.List&lt;java.lang.Object&gt;"/>
+        <property name="initial_payment_method" type="com.commerceootb.facades.klarna.data.InitialPaymentMethod"/>
+        <property name="shipping_info" type="java.util.List&lt;java.lang.Object&gt;"/>
+    </bean>
+
+    <bean class="com.commerceootb.facades.klarna.data.KlarnaOrderLineExtended">
+        <property name="reference" type="java.lang.String"/>
+        <property name="type" type="java.lang.String"/>
+        <property name="quantity_unit" type="java.lang.String"/>
+        <property name="total_discount_amount" type="java.lang.Integer"/>
+        <property name="tax_rate" type="java.lang.Integer"/>
+        <property name="total_tax_amount" type="java.lang.Integer"/>
+        <property name="product_url" type="java.lang.String"/>
+        <property name="image_url" type="java.lang.String"/>
+    </bean>
+
+    <!-- Initial payment method -->
+    <bean class="com.commerceootb.facades.klarna.data.InitialPaymentMethod">
+        <property name="type" type="java.lang.String"/>
+        <property name="description" type="java.lang.String"/>
+    </bean>
+
 </beans>

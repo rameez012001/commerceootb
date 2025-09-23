@@ -25,6 +25,7 @@ import de.hybris.platform.cms2.model.pages.ContentPageModel;
 import de.hybris.platform.commercefacades.order.data.CCPaymentInfoData;
 import de.hybris.platform.commercefacades.order.data.CardTypeData;
 import de.hybris.platform.commercefacades.order.data.CartData;
+import de.hybris.platform.commercefacades.order.data.OrderData;
 import de.hybris.platform.commercefacades.user.data.AddressData;
 import de.hybris.platform.commercefacades.user.data.CountryData;
 import de.hybris.platform.commerceservices.enums.CountryType;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import de.hybris.platform.order.CartService;
@@ -145,24 +147,15 @@ public class PaymentMethodCheckoutStepController extends AbstractCheckoutStepCon
 		setCheckoutStepLinksForModel(model, getCheckoutStep());
 		if (CheckoutPciOptionEnum.HOP.equals(subscriptionPciOption))
 		{
-			// Redirect the customer to the HOP page or show error message if it fails (e.g. no HOP configurations).
-			try
-			{
-				final PaymentData hostedOrderPageData = getPaymentFacade().beginHopCreateSubscription("/checkout/multi/hop/response",
-						"/integration/merchant_callback");
-				model.addAttribute("hostedOrderPageData", hostedOrderPageData);
-
-				final boolean hopDebugMode = getSiteConfigService().getBoolean(PaymentConstants.PaymentProperties.HOP_DEBUG_MODE,
-						false);
-				model.addAttribute("hopDebugMode", Boolean.valueOf(hopDebugMode));
-
-				return ControllerConstants.Views.Pages.MultiStepCheckout.HostedOrderPostPage;
-			}
-			catch (final Exception e)
-			{
-				LOGGER.error("Failed to build beginCreateSubscription request", e);
-				GlobalMessages.addErrorMessage(model, "checkout.multi.paymentMethod.addPaymentDetails.generalError");
-			}
+            // Redirect the customer to the HOP page or show error message if it fails (e.g. no HOP configurations).
+            try {
+                KlarnaHppSessionResData kpHppRes = getKlarnaPaymentFacade().createKpSession();
+                LOGGER.info("Redirecting to Klarna: " + kpHppRes.getRedirect_url());
+                return "redirect:" + kpHppRes.getRedirect_url();
+            } catch (final Exception e) {
+                LOGGER.error("Failed to build beginCreateSubscription request", e);
+                GlobalMessages.addErrorMessage(model, "checkout.multi.paymentMethod.addPaymentDetails.generalError");
+            }
 		}
 		else if (CheckoutPciOptionEnum.SOP.equals(subscriptionPciOption))
 		{
@@ -424,14 +417,23 @@ public class PaymentMethodCheckoutStepController extends AbstractCheckoutStepCon
 		return "redirect:" + kpHppRes.getRedirect_url();
     }
 
-	@PostMapping("/klarna-success")
+	@GetMapping("/klarna-success")
 	@RequireHardLogIn
-	public String successKlarna(
-			@RequestParam("sid") final String sessionId,
-			@RequestParam("authorization_token") final String authorizationToken,
-			final Model model){
-		getKlarnaPaymentFacade().createOrder(sessionId,authorizationToken);
-		return null;
+	public String successKlarna(final HttpServletRequest request){
+        String sid = request.getParameter("sid");
+        String token = request.getParameter("authorization_token");
+        OrderData orderData;
+        try {
+
+            getKlarnaPaymentFacade().createOrder(sid, token);
+
+            orderData = getCheckoutFacade().placeOrder();
+
+            return redirectToOrderConfirmationPage(orderData);
+        } catch (Exception e) {
+            LOGGER.error("Klarna finalize failed [sid=" + sid + ", token=" + token + "]", e);
+            return REDIRECT_PREFIX + "/checkout/multi/payment-method/add";
+        }
 	}
 
 	public KlarnaPaymentFacade getKlarnaPaymentFacade() {

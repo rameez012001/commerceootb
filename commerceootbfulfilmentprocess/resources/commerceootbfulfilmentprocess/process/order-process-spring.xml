@@ -33,6 +33,7 @@
 
 	<bean id="takePaymentAction" class="com.commerceootb.fulfilmentprocess.actions.order.TakePaymentAction"  parent="abstractAction">
 		<property name="paymentService" ref="paymentService"/>
+        <property name="klarnaService" ref="klarnaService"/>
     </bean>
 
 	<bean id="sendPaymentFailedNotificationAction" class="com.commerceootb.fulfilmentprocess.actions.order.SendPaymentFailedNotificationAction"  parent="abstractAction">

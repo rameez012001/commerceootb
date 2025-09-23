@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +35,7 @@ public class HopPaymentResponseController extends PaymentMethodCheckoutStepContr
 {
 	private static final Logger LOGGER = Logger.getLogger(HopPaymentResponseController.class);
 
-	@RequestMapping(value = "/response", method = RequestMethod.POST)
+	@GetMapping("/response")
 	@RequireHardLogIn
 	public String doHandleHopResponse(final HttpServletRequest request)
 	{
@@ -89,5 +90,4 @@ public class HopPaymentResponseController extends PaymentMethodCheckoutStepContr
 
 		return ControllerConstants.Views.Pages.MultiStepCheckout.HostedOrderPageErrorPage;
 	}
-
 }

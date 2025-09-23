@@ -25,73 +25,65 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping(value = "/checkout/multi/delivery-method")
-public class DeliveryMethodCheckoutStepController extends AbstractCheckoutStepController
-{
-	private static final String DELIVERY_METHOD = "delivery-method";
+public class DeliveryMethodCheckoutStepController extends AbstractCheckoutStepController {
+    private static final String DELIVERY_METHOD = "delivery-method";
 
-	@RequestMapping(value = "/choose", method = RequestMethod.GET)
-	@RequireHardLogIn
-	@Override
-	@PreValidateQuoteCheckoutStep
-	@PreValidateCheckoutStep(checkoutStep = DELIVERY_METHOD)
-	public String enterStep(final Model model, final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
-	{
-		// Try to set default delivery mode
-		getCheckoutFacade().setDeliveryModeIfAvailable();
+    @RequestMapping(value = "/choose", method = RequestMethod.GET)
+    @RequireHardLogIn
+    @Override
+    @PreValidateQuoteCheckoutStep
+    @PreValidateCheckoutStep(checkoutStep = DELIVERY_METHOD)
+    public String enterStep(final Model model, final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException {
+        // Try to set default delivery mode
+        getCheckoutFacade().setDeliveryModeIfAvailable();
 
-		final CartData cartData = getCheckoutFacade().getCheckoutCart();
-		model.addAttribute("cartData", cartData);
-		model.addAttribute("deliveryMethods", getCheckoutFacade().getSupportedDeliveryModes());
-		this.prepareDataForPage(model);
-		final ContentPageModel multiCheckoutSummaryPage = getContentPageForLabelOrId(MULTI_CHECKOUT_SUMMARY_CMS_PAGE_LABEL);
-		storeCmsPageInModel(model, multiCheckoutSummaryPage);
-		setUpMetaDataForContentPage(model, multiCheckoutSummaryPage);
-		model.addAttribute(WebConstants.BREADCRUMBS_KEY,
-				getResourceBreadcrumbBuilder().getBreadcrumbs("checkout.multi.deliveryMethod.breadcrumb"));
-		model.addAttribute("metaRobots", "noindex,nofollow");
-		setCheckoutStepLinksForModel(model, getCheckoutStep());
+        final CartData cartData = getCheckoutFacade().getCheckoutCart();
+        model.addAttribute("cartData", cartData);
+        model.addAttribute("deliveryMethods", getCheckoutFacade().getSupportedDeliveryModes());
+        this.prepareDataForPage(model);
+        final ContentPageModel multiCheckoutSummaryPage = getContentPageForLabelOrId(MULTI_CHECKOUT_SUMMARY_CMS_PAGE_LABEL);
+        storeCmsPageInModel(model, multiCheckoutSummaryPage);
+        setUpMetaDataForContentPage(model, multiCheckoutSummaryPage);
+        model.addAttribute(WebConstants.BREADCRUMBS_KEY,
+                getResourceBreadcrumbBuilder().getBreadcrumbs("checkout.multi.deliveryMethod.breadcrumb"));
+        model.addAttribute("metaRobots", "noindex,nofollow");
+        setCheckoutStepLinksForModel(model, getCheckoutStep());
 
-		return ControllerConstants.Views.Pages.MultiStepCheckout.ChooseDeliveryMethodPage;
-	}
+        return ControllerConstants.Views.Pages.MultiStepCheckout.ChooseDeliveryMethodPage;
+    }
 
-	/**
-	 * This method gets called when the "Use Selected Delivery Method" button is clicked. It sets the selected delivery
-	 * mode on the checkout facade and reloads the page highlighting the selected delivery Mode.
-	 *
-	 * @param selectedDeliveryMethod
-	 *           - the id of the delivery mode.
-	 * @return - a URL to the page to load.
-	 */
-	@RequestMapping(value = "/select", method = RequestMethod.GET)
-	@RequireHardLogIn
-	public String doSelectDeliveryMode(@RequestParam("delivery_method") final String selectedDeliveryMethod)
-	{
-		if (StringUtils.isNotEmpty(selectedDeliveryMethod))
-		{
-			getCheckoutFacade().setDeliveryMode(selectedDeliveryMethod);
-		}
+    /**
+     * This method gets called when the "Use Selected Delivery Method" button is clicked. It sets the selected delivery
+     * mode on the checkout facade and reloads the page highlighting the selected delivery Mode.
+     *
+     * @param selectedDeliveryMethod - the id of the delivery mode.
+     * @return - a URL to the page to load.
+     */
+    @RequestMapping(value = "/select", method = RequestMethod.GET)
+    @RequireHardLogIn
+    public String doSelectDeliveryMode(@RequestParam("delivery_method") final String selectedDeliveryMethod) {
+        if (StringUtils.isNotEmpty(selectedDeliveryMethod)) {
+            getCheckoutFacade().setDeliveryMode(selectedDeliveryMethod);
+        }
 
-		return getCheckoutStep().nextStep();
-	}
+        return getCheckoutStep().nextStep();
+    }
 
-	@RequestMapping(value = "/back", method = RequestMethod.GET)
-	@RequireHardLogIn
-	@Override
-	public String back(final RedirectAttributes redirectAttributes)
-	{
-		return getCheckoutStep().previousStep();
-	}
+    @RequestMapping(value = "/back", method = RequestMethod.GET)
+    @RequireHardLogIn
+    @Override
+    public String back(final RedirectAttributes redirectAttributes) {
+        return getCheckoutStep().previousStep();
+    }
 
-	@RequestMapping(value = "/next", method = RequestMethod.GET)
-	@RequireHardLogIn
-	@Override
-	public String next(final RedirectAttributes redirectAttributes)
-	{
-		return getCheckoutStep().nextStep();
-	}
+    @RequestMapping(value = "/next", method = RequestMethod.GET)
+    @RequireHardLogIn
+    @Override
+    public String next(final RedirectAttributes redirectAttributes) {
+        return getCheckoutStep().nextStep();
+    }
 
-	protected CheckoutStep getCheckoutStep()
-	{
-		return getCheckoutStep(DELIVERY_METHOD);
-	}
+    protected CheckoutStep getCheckoutStep() {
+        return getCheckoutStep(DELIVERY_METHOD);
+    }
 }

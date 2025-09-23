@@ -360,6 +360,9 @@
     <bean id="klarnaPaymentFacade" class="com.commerceootb.facades.facadeImpl.KlarnaPaymentFacadeImpl">
         <property name="klarnaService" ref="klarnaService"/>
         <property name="cartService" ref="cartService"/>
+        <property name="modelService" ref="modelService" />
+        <property name="commonI18NService" ref="commonI18NService" />
+        <property name="transactionCodeGenerator" ref="transactionCodeGenerator" />
     </bean>
 
 <!--    <bean id = "customAddressPopulator" class="com.commerceootb.facades.populators.CustomAddressPopulator"/>-->
